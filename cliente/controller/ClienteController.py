@@ -2,16 +2,13 @@ from cliente.model.Cliente import Cliente
 
 class ClienteController:
     def __init__(self):
-        self.clienti = []  # lista clienti temporanea (poi la salveremo su file/json)
+        self.clienti = []
 
     def aggiungi_cliente(self, cliente: Cliente):
         self.clienti.append(cliente)
 
     def get_cliente_by_id(self, id):
-        for c in self.clienti:
-            if c.id == id:
-                return c
-        return None
+        return next((c for c in self.clienti if c.id == id), None)
 
     def rimuovi_cliente(self, id):
         self.clienti = [c for c in self.clienti if c.id != id]

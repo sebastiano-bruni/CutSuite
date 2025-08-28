@@ -13,9 +13,32 @@ class StorageCliente:
 
     def carica(self) -> List[Cliente]:
         """Carica tutti i clienti dal file JSON"""
-        with open(self.filename, "r") as f:
-            data = json.load(f)
-        return [Cliente(**c) for c in data]  # ricostruisce Cliente dal dict
+        try:
+            with open(self.filename, "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            return []
+
+        clienti = []
+        for c in data:
+            cliente = Cliente(
+                nome=c["nome"],
+                cognome=c["cognome"],
+                cf=c["cf"],
+                email=c["email"],
+                telefono=c["telefono"],
+                numVisite=c.get("numVisite", 0),
+                statoFedelta=(c.get("statoFedelta") == "attivo")
+            )
+            cliente.id = c["id"]  # assegna manualmente l'id salvato
+            clienti.append(cliente)
+
+        # 🔥 aggiorno anche il contatore degli id
+        if clienti:
+            Cliente._next_id = max(c.id for c in clienti) + 1
+
+        return clienti
+
 
     def salva(self, clienti: List[Cliente]) -> None:
         """Salva tutti i clienti nel file JSON"""

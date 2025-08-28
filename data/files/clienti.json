@@ -1,0 +1,22 @@
+[
+    {
+        "nome": "seba",
+        "cognome": "bruni",
+        "cf": "BRNSST03P14E783J",
+        "email": "sebastiano.bruni.03@gmail.com",
+        "telefono": "1234312839",
+        "numVisite": 0,
+        "statoFedelta": "inattivo",
+        "id": 1
+    },
+    {
+        "nome": "noemi",
+        "cognome": "bruni",
+        "cf": "BSDNFNRIEOSF12Q4",
+        "email": "noemi.bruni.04@gmail.com",
+        "telefono": "2342143128",
+        "numVisite": 0,
+        "statoFedelta": "attivo",
+        "id": 2
+    }
+]

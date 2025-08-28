@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 
+from controller.ClienteController import ClienteController
 from view.GestioneClienti.inserisciCliente_ui import InserisciCliente
 
 
@@ -16,6 +17,7 @@ class GestioneClienti(QMainWindow):
         self.setWindowTitle("CutSuite - Gestione Clienti")
         self.resize(1000, 700)
         self.client_window = None
+        self.controller = ClienteController()
 
         # Widget centrale
         central_widget = QWidget()
@@ -180,14 +182,10 @@ class GestioneClienti(QMainWindow):
         self.clients_layout.setSpacing(10)
         self.clients_layout.setContentsMargins(15, 15, 15, 15)
 
-        # Dati di esempio dei clienti
-        self.clients = [
-            {"name": "Martina", "surname": "Rossi", "email": "martina.rossi@gmail.com"},
-            {"name": "Marco", "surname": "Botton", "email": "marco.botton@gmail.com"},
-            {"name": "Carlo", "surname": "Verdi", "email": "carlo.verdi@gmail.com"}
-        ]
+        # Dati dei clienti
+        self.display_clients(self.controller.get_tutti_clienti())
 
-        self.display_clients()
+        self.display_clients(self.controller.get_tutti_clienti())
 
         scroll_area.setWidget(clients_widget)
         main_layout.addWidget(scroll_area, 1)  # 1 = stretch factor
@@ -218,13 +216,15 @@ class GestioneClienti(QMainWindow):
         add_client_button.clicked.connect(self.handle_add_client)
         main_layout.addWidget(add_client_button)
 
-    def display_clients(self):
+    def display_clients(self, clients):
         # Rimuovi tutti i widget esistenti
         for i in reversed(range(self.clients_layout.count())):
-            self.clients_layout.itemAt(i).widget().setParent(None)
+            item = self.clients_layout.itemAt(i)
+            if item.widget():
+                item.widget().setParent(None)
 
         # Aggiungi i clienti
-        for client in self.clients:
+        for client in clients:
             client_frame = QFrame()
             client_frame.setStyleSheet("""
                 QFrame {
@@ -239,17 +239,17 @@ class GestioneClienti(QMainWindow):
             client_grid.setSpacing(5)
 
             # Nome in grassetto
-            name_label = QLabel(client["name"])
+            name_label = QLabel(client.nome)  # usa l’oggetto Cliente
             name_label.setStyleSheet("font-weight: bold; font-size: 14px;")
             client_grid.addWidget(name_label, 0, 0)
 
             # Cognome in grassetto
-            surname_label = QLabel(client["surname"])
+            surname_label = QLabel(client.cognome)
             surname_label.setStyleSheet("font-weight: bold; font-size: 14px;")
             client_grid.addWidget(surname_label, 0, 1)
 
             # Email
-            email_label = QLabel(client["email"])
+            email_label = QLabel(client.email)
             email_label.setStyleSheet("color: #666666; font-size: 13px;")
             client_grid.addWidget(email_label, 1, 0, 1, 2)
 
@@ -259,18 +259,30 @@ class GestioneClienti(QMainWindow):
         self.clients_layout.addStretch()
 
     def handle_search(self):
-        name = self.name_search_input.text().strip()
-        surname = self.surname_search_input.text().strip()
+        name = self.name_search_input.text().strip().lower()
+        surname = self.surname_search_input.text().strip().lower()
         sort_order = self.sort_combo.currentText()
 
-        print(f"Ricerca: Nome='{name}', Cognome='{surname}', Ordine='{sort_order}'")
-        # Qui implementerai la logica di ricerca effettiva
+        # filtra
+        all_clients = self.controller.get_tutti_clienti()
+        filtered = [
+            c for c in all_clients
+            if (name in c.nome.lower() if name else True)
+            and (surname in c.cognome.lower() if surname else True)
+        ]
+
+        # ordina
+        reverse = (sort_order == "Nome Z-A")
+        filtered.sort(key=lambda c: (c.nome or "").lower(), reverse=reverse)
+
+        self.display_clients(filtered)
+
 
     def handle_reset(self):
         self.name_search_input.clear()
         self.surname_search_input.clear()
         self.sort_combo.setCurrentIndex(0)
-        print("Campi di ricerca resettati")
+        self.display_clients(self.controller.get_tutti_clienti())
 
     def handle_add_client(self):
         print("Apertura form per inserimento nuovo cliente")

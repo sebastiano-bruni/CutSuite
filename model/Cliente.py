@@ -2,10 +2,10 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional
 
-class Cliente():
 
-    @dataclass
-    class Cliente:
+
+@dataclass
+class Cliente:
         id: int = field(init=False)
         nome: str
         cognome: str

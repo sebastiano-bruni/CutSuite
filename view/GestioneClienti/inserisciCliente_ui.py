@@ -6,13 +6,16 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QIntValidator
 
+from controller.ClienteController import ClienteController
+from model.Cliente import Cliente
+
 
 class InserisciCliente(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("CutSuite - Inserisci cliente")
         self.resize(500, 600)
-
+        self.controller = ClienteController()
         self.init_ui()
 
     def init_ui(self):
@@ -97,10 +100,9 @@ class InserisciCliente(QMainWindow):
 
                 # Validazione specifica per alcuni campi
                 if field_name == "telefono":
-                    input_widget.setInputMask("9999999999")
+                    input_widget.setMaxLength(10)
                 elif field_name == "codice_fiscale":
                     input_widget.setMaxLength(16)
-                    input_widget.setInputMask(">AAAAAA99A99A999A")
                 elif field_name == "numero_appuntamenti":
                     input_widget.setValidator(QIntValidator(0, 999))
 
@@ -176,20 +178,30 @@ class InserisciCliente(QMainWindow):
 
         # Validazione
         errors = self.validate_data(client_data)
-
         if errors:
             error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
             QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
-        # Qui implementerai il salvataggio nel database
-        print("Dati cliente da inserire:", client_data)
+        # Crea l'oggetto Cliente
+        nuovo_cliente = Cliente(
+            nome=client_data['nome'],
+            cognome=client_data['cognome'],
+            email=client_data['email'],
+            telefono=client_data['telefono'],
+            cf=client_data['codice_fiscale'],
+            numVisite=int(client_data['numero_appuntamenti']),
+            statoFedelta=client_data['stato_fedelta']
+        )
+
+        # Chiama il controller per salvare
+        self.controller.crea_cliente(nuovo_cliente)
 
         # Mostra conferma
         QMessageBox.information(
             self,
             "Successo",
-            f"Cliente {client_data['nome']} {client_data['cognome']} inserito con successo!"
+            f"Cliente {nuovo_cliente.nome} {nuovo_cliente.cognome} inserito con successo!"
         )
 
         # Resetta il form

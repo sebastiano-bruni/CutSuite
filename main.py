@@ -1,10 +1,12 @@
 import sys
 from PyQt6.QtWidgets import QApplication
+from view.home_ui import HomeWindow  # importa la tua classe HomeWindow
 
-from home.views.VistaHome import VistaHome
-
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
-    vista_home = VistaHome()
-    vista_home.show()
+    window = HomeWindow()
+    window.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()

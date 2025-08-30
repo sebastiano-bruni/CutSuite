@@ -32,3 +32,7 @@ class PromozioneController:
     def ricerca_promozione_per_nome(self, nome: str):
         nome = nome.lower()
         return [p for p in self.promozioni if nome in p.nome.lower()]
+
+    def reload(self):
+        """Ricarica la lista delle promozioni dallo storage."""
+        self.promozioni = self.storage.carica()

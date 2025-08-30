@@ -1,36 +1,36 @@
 import sys
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QFrame, QGridLayout, QMessageBox
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 
-from controller.ClienteController import ClienteController
-from view.GestioneClienti.modificaCliente_ui import ModificaCliente
+from controller.PromozioneController import PromozioneController
+from view.GestionePromozioni.modificaPromozione_ui import ModificaPromozione
 
 
-class DettagliCliente(QMainWindow):
-    cliente_modificato = pyqtSignal()
+class DettagliPromozione(QMainWindow):
+    promozione_modificata = pyqtSignal()
 
-    def __init__(self, cliente):
+    def __init__(self, promozione):
         super().__init__()
-        self.cliente = cliente
-        self.setWindowTitle("CutSuite - Dettagli cliente")
+        self.promozione = promozione
+        self.setWindowTitle("CutSuite - Dettagli promozione")
         self.resize(600, 500)
         self.init_ui()
 
     def init_ui(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        self.controller = ClienteController()
+        self.controller = PromozioneController()
         self.controller.reload()
 
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(20)
         main_layout.setContentsMargins(30, 30, 30, 30)
 
-        title_label = QLabel("CutSuite - Dettagli cliente")
+        title_label = QLabel("CutSuite - Dettagli promozione")
         title_label.setStyleSheet("""
             QLabel {
                 font-size: 24px;
@@ -54,18 +54,14 @@ class DettagliCliente(QMainWindow):
         details_layout.setSpacing(0)
         details_layout.setContentsMargins(0, 0, 0, 0)
 
-        headers = ["ID", "Nome", "Cognome", "Email", "Telefono",
-                   "Codice Fiscale", "Numero Appuntamenti", "Stato Fedeltà"]
+        headers = ["ID", "Nome", "Descrizione", "Soglia", "Sconto"]
 
         values = [
-            str(self.cliente.id),
-            self.cliente.nome,
-            self.cliente.cognome,
-            self.cliente.email,
-            self.cliente.telefono,
-            self.cliente.cf,
-            str(self.cliente.numVisite),
-            str(self.cliente.statoFedelta)
+            str(self.promozione.id),
+            self.promozione.nome,
+            self.promozione.descrizione,
+            str(self.promozione.soglia_promozione),
+            f"{self.promozione.sconto_percentuale}%"
         ]
 
         for i, (header, value) in enumerate(zip(headers, values)):
@@ -110,7 +106,7 @@ class DettagliCliente(QMainWindow):
         buttons_layout.setSpacing(20)
         buttons_layout.setContentsMargins(0, 0, 0, 0)
 
-        edit_button = QPushButton("Modifica")
+        edit_button = QPushButton("Modifica promozione")
         edit_button.setStyleSheet("""
             QPushButton {
                 background-color: #4a90e2;
@@ -127,7 +123,7 @@ class DettagliCliente(QMainWindow):
         """)
         edit_button.clicked.connect(self.handle_edit)
 
-        delete_button = QPushButton("Elimina")
+        delete_button = QPushButton("Elimina promozione")
         delete_button.setStyleSheet("""
             QPushButton {
                 background-color: #dc3545;
@@ -153,26 +149,27 @@ class DettagliCliente(QMainWindow):
         main_layout.addStretch()
 
     def handle_edit(self):
-        print(f"Apertura modifica per cliente: {self.cliente.nome} {self.cliente.cognome}")
-        self.modifica_cliente()
+        print(f"Apertura modifica per promozione: {self.promozione.nome}")
+        self.modifica_promozione()
 
     def handle_delete(self):
         reply = QMessageBox.question(
             self,
             "Conferma eliminazione",
-            f"Sei sicuro di voler eliminare il cliente {self.cliente.nome} {self.cliente.cognome}?",
+            f"Sei sicuro di voler eliminare la promozione {self.promozione.nome}?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
 
         if reply == QMessageBox.StandardButton.Yes:
             try:
-                self.controller.rimuovi_cliente(self.cliente.id)
+                self.controller.rimuovi_promozione(self.promozione.id)
                 QMessageBox.information(
                     self,
                     "Successo",
-                    f"Cliente {self.cliente.nome} {self.cliente.cognome} eliminato con successo!"
+                    f"Promozione {self.promozione.nome} eliminata con successo!"
                 )
+                self.promozione_modificata.emit()
                 self.close()
             except Exception as e:
                 QMessageBox.critical(
@@ -181,9 +178,10 @@ class DettagliCliente(QMainWindow):
                     f"Errore durante l'eliminazione: {str(e)}"
                 )
 
-    def modifica_cliente(self):
-        self.client_window = ModificaCliente(self.cliente)
-        self.client_window.cliente_modificato.connect(self.cliente_modificato.emit)
-        self.client_window.show()
-        self.client_window.raise_()
-        self.client_window.activateWindow()
+    def modifica_promozione(self):
+        from view.GestionePromozioni.modificaPromozione_ui import ModificaPromozione
+        self.modifica_window = ModificaPromozione(self.promozione)
+        self.modifica_window.promozione_modificata.connect(self.promozione_modificata.emit)
+        self.modifica_window.show()
+        self.modifica_window.raise_()
+        self.modifica_window.activateWindow()

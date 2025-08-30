@@ -28,7 +28,7 @@ class StorageCliente:
                 email=c["email"],
                 telefono=c["telefono"],
                 numVisite=c.get("numVisite", 0),
-                statoFedelta=(c.get("statoFedelta") == "attivo")
+                statoFedelta = c.get("statoFedelta", "inattivo")
             )
             cliente.id = c["id"]  # assegna manualmente l'id salvato
             clienti.append(cliente)

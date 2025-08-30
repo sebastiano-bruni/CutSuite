@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication
 from view.home_ui import HomeWindow  # importa la tua classe HomeWindow
+from view.accesso_ui import LoginWindow
 
 def main():
     app = QApplication(sys.argv)

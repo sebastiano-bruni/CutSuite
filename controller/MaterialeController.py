@@ -1,6 +1,7 @@
 from model.Materiale import Materiale
 from data.storage.storage_materiale import StorageMateriale
 
+
 class MaterialeController:
     def __init__(self):
         self.storage = StorageMateriale("data/files/materiali.json")
@@ -52,3 +53,7 @@ class MaterialeController:
             self.storage.salva(self.materiali)
             return True
         return False
+
+    def reload(self):
+        """Ricarica la lista dei materiali dallo storage."""
+        self.materiali = self.storage.carica()

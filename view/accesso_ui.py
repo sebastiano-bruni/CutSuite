@@ -192,17 +192,3 @@ class LoginWindow(QMainWindow):
         # self.home_window = HomeWindow(username)
         # self.home_window.show()
         # self.hide()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    # Imposta il font dell'applicazione
-    font = QFont()
-    font.setFamily("Arial")
-    font.setPointSize(10)
-    app.setFont(font)
-
-    window = LoginWindow()
-    window.show()
-    sys.exit(app.exec())

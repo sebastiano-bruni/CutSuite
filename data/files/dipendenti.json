@@ -1,0 +1,28 @@
+[
+    {
+        "nome": "elsa",
+        "cognome": "Vanni",
+        "cf": "",
+        "email": "seld.vav@gmail.com",
+        "telefono": "234352542",
+        "username": "elsa.vanni",
+        "password": "elsa.vanni",
+        "stipendio": 2000,
+        "ruolo": "Parrucchiere",
+        "id": 2,
+        "__class__": "Parrucchiere"
+    },
+    {
+        "nome": "seba",
+        "cognome": "bruni",
+        "cf": "brnsnsdnds",
+        "email": "seba.bruni@gmail.com",
+        "telefono": "13243432143",
+        "username": "seba.bruni",
+        "password": "seba.bruni",
+        "permessi": 1,
+        "ruolo": "Proprietario",
+        "id": 3,
+        "__class__": "Proprietario"
+    }
+]

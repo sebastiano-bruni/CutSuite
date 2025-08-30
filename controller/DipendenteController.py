@@ -39,3 +39,6 @@ class DipendenteController:
 
     def ricerca_dipendente_per_permessi(self, livello_permessi: int):
         return [d for d in self.dipendenti if hasattr(d, "permessi") and d.permessi == livello_permessi]
+
+    def reload(self):
+        self.dipendenti = self.storage.carica()

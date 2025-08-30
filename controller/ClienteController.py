@@ -29,6 +29,9 @@ class ClienteController:
     def get_tutti_clienti(self):
         return self.clienti
 
+    def reload(self):
+        self.clienti = self.storage.carica()
+
     def ricerca_cliente_per_nome(self, nome: str):
         nome = nome.lower()
         return [c for c in self.clienti if nome in c.nome.lower()]

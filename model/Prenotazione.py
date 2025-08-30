@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
-
-from model import Cliente, Dipendente, Servizio
-
+from typing import ClassVar, Optional
+from model.Cliente import Cliente
+from model.Servizio import Servizio
+from model.Dipendente import Dipendente
 
 @dataclass
 class Prenotazione:
@@ -13,13 +13,15 @@ class Prenotazione:
     dipendente: Dipendente
     data: datetime
     ora: datetime
-    durata_minuti: Optional[int] = None
-    stato: str = "Non pagata"  # Non pagata, Pagata
+    durata_minuti: int
+    prezzo: float
+    stato: str
+    email_cliente: str
+    note: str
 
-    _next_id = 1  # variabile di classe (non nei campi)
+    _next_id: ClassVar[int] = 1
 
     def __post_init__(self):
-        self.id = Prenotazione._next_id
-        Prenotazione._next_id += 1
-        if self.durata_minuti is None:
-            self.durata_minuti = self.servizio.durata_minuti
+        if not hasattr(self, 'id'):
+            self.id = Prenotazione._next_id
+            Prenotazione._next_id += 1

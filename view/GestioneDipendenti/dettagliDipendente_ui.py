@@ -1,36 +1,36 @@
 import sys
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QFrame, QGridLayout, QMessageBox
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 
-from controller.ClienteController import ClienteController
-from view.GestioneClienti.modificaCliente_ui import ModificaCliente
+from controller.DipendenteController import DipendenteController
+from view.GestioneDipendenti.modificaDipendente_ui import ModificaDipendente
 
 
-class DettagliCliente(QMainWindow):
-    cliente_modificato = pyqtSignal()
+class DettagliDipendente(QMainWindow):
+    dipendente_modificato = pyqtSignal()
 
-    def __init__(self, cliente):
+    def __init__(self, dipendente):
         super().__init__()
-        self.cliente = cliente
-        self.setWindowTitle("CutSuite - Dettagli cliente")
+        self.dipendente = dipendente
+        self.setWindowTitle("CutSuite - Dettagli Dipendente")
         self.resize(600, 500)
         self.init_ui()
 
     def init_ui(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        self.controller = ClienteController()
+        self.controller = DipendenteController()
         self.controller.reload()
 
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(20)
         main_layout.setContentsMargins(30, 30, 30, 30)
 
-        title_label = QLabel("CutSuite - Dettagli cliente")
+        title_label = QLabel("CutSuite - Dettagli dipendente")
         title_label.setStyleSheet("""
             QLabel {
                 font-size: 24px;
@@ -55,17 +55,18 @@ class DettagliCliente(QMainWindow):
         details_layout.setContentsMargins(0, 0, 0, 0)
 
         headers = ["ID", "Nome", "Cognome", "Email", "Telefono",
-                   "Codice Fiscale", "Numero Appuntamenti", "Stato Fedeltà"]
+                   "Username", "Ruolo", "Stipendio"]
 
         values = [
-            str(self.cliente.id),
-            self.cliente.nome,
-            self.cliente.cognome,
-            self.cliente.email,
-            self.cliente.telefono,
-            self.cliente.cf,
-            str(self.cliente.numVisite),
-            str(self.cliente.statoFedelta)
+            str(self.dipendente.id),
+            self.dipendente.nome,
+            self.dipendente.cognome,
+            self.dipendente.email,
+            self.dipendente.telefono,
+            self.dipendente.username,
+            self.dipendente.ruolo if hasattr(self.dipendente, 'ruolo') else 'Proprietario',
+            # Corretto il valore del ruolo
+            str(self.dipendente.stipendio) if hasattr(self.dipendente, 'stipendio') else "N/A"  # Corretto lo stipendio
         ]
 
         for i, (header, value) in enumerate(zip(headers, values)):
@@ -110,7 +111,7 @@ class DettagliCliente(QMainWindow):
         buttons_layout.setSpacing(20)
         buttons_layout.setContentsMargins(0, 0, 0, 0)
 
-        edit_button = QPushButton("Modifica")
+        edit_button = QPushButton("Modifica dipendente")
         edit_button.setStyleSheet("""
             QPushButton {
                 background-color: #4a90e2;
@@ -127,7 +128,7 @@ class DettagliCliente(QMainWindow):
         """)
         edit_button.clicked.connect(self.handle_edit)
 
-        delete_button = QPushButton("Elimina")
+        delete_button = QPushButton("Elimina dipendente")
         delete_button.setStyleSheet("""
             QPushButton {
                 background-color: #dc3545;
@@ -153,25 +154,25 @@ class DettagliCliente(QMainWindow):
         main_layout.addStretch()
 
     def handle_edit(self):
-        print(f"Apertura modifica per cliente: {self.cliente.nome} {self.cliente.cognome}")
-        self.modifica_cliente()
+        print(f"Apertura modifica per dipendente: {self.dipendente.nome} {self.dipendente.cognome}")
+        self.modifica_dipendente()
 
     def handle_delete(self):
         reply = QMessageBox.question(
             self,
             "Conferma eliminazione",
-            f"Sei sicuro di voler eliminare il cliente {self.cliente.nome} {self.cliente.cognome}?",
+            f"Sei sicuro di voler eliminare il dipendente {self.dipendente.nome} {self.dipendente.cognome}?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
 
         if reply == QMessageBox.StandardButton.Yes:
             try:
-                self.controller.rimuovi_cliente(self.cliente.id)
+                self.controller.rimuovi_dipendente(self.dipendente.id)
                 QMessageBox.information(
                     self,
                     "Successo",
-                    f"Cliente {self.cliente.nome} {self.cliente.cognome} eliminato con successo!"
+                    f"Dipendente {self.dipendente.nome} {self.dipendente.cognome} eliminato con successo!"
                 )
                 self.close()
             except Exception as e:
@@ -181,9 +182,9 @@ class DettagliCliente(QMainWindow):
                     f"Errore durante l'eliminazione: {str(e)}"
                 )
 
-    def modifica_cliente(self):
-        self.client_window = ModificaCliente(self.cliente)
-        self.client_window.cliente_modificato.connect(self.cliente_modificato.emit)
-        self.client_window.show()
-        self.client_window.raise_()
-        self.client_window.activateWindow()
+    def modifica_dipendente(self):
+        self.dip_window = ModificaDipendente(self.dipendente)
+        self.dip_window.dipendente_modificato.connect(self.dipendente_modificato.emit)
+        self.dip_window.show()
+        self.dip_window.raise_()
+        self.dip_window.activateWindow()

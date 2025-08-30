@@ -1,5 +1,7 @@
 from model.Servizio import Servizio
 from data.storage.storage_servizio import StorageServizio
+from datetime import datetime
+
 
 class ServizioController:
     def __init__(self):
@@ -38,3 +40,7 @@ class ServizioController:
 
     def servizi_ordinati_per_durata(self):
         return sorted(self.servizi, key=lambda s: s.durata_minuti)
+
+    def reload(self):
+        """Ricarica la lista dei servizi dallo storage."""
+        self.servizi = self.storage.carica()

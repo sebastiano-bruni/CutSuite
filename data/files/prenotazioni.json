@@ -1,0 +1,15 @@
+[
+    {
+        "data": "2025-09-11T00:00:00",
+        "ora": "2025-09-11T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "stato": "confermata",
+        "email_cliente": "sebastiano.bruni.03@gmail.com",
+        "note": "",
+        "id": 1,
+        "cliente_id": 1,
+        "servizio_id": 1,
+        "dipendente_id": 3
+    }
+]

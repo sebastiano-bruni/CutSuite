@@ -6,7 +6,7 @@
         "email": "sebastiano.bruni.03@gmail.com",
         "telefono": "1234312839",
         "numVisite": 0,
-        "statoFedelta": "inattivo",
+        "statoFedelta": "Non attivo",
         "id": 1
     },
     {
@@ -16,7 +16,37 @@
         "email": "noemi.bruni.04@gmail.com",
         "telefono": "2342143128",
         "numVisite": 0,
-        "statoFedelta": "attivo",
+        "statoFedelta": "Non attivo",
         "id": 2
+    },
+    {
+        "nome": "Marco",
+        "cognome": "Verdi",
+        "cf": "qwertyuiopas3456",
+        "email": "marco.rossi@gmail.com",
+        "telefono": "2344429384",
+        "numVisite": 0,
+        "statoFedelta": "Attivo",
+        "id": 3
+    },
+    {
+        "nome": "sara",
+        "cognome": "scazzi",
+        "cf": "qwertyuiop123342",
+        "email": "sara,scazzi@gmail.com",
+        "telefono": "1234489826",
+        "numVisite": 0,
+        "statoFedelta": "Attivo",
+        "id": 5
+    },
+    {
+        "nome": "ciao",
+        "cognome": "patti",
+        "cf": "qwertyuiopa12345",
+        "email": "gfsd.gfs@gmail,com",
+        "telefono": "2345323542",
+        "numVisite": 0,
+        "statoFedelta": "Attivo",
+        "id": 6
     }
 ]

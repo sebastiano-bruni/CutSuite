@@ -1,14 +1,17 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Optional
+from typing import ClassVar, Optional
+
 @dataclass
 class Materiale:
     id: int = field(init=False)
     nome: str
     categoria: str
+    prezzo: float
     quantita: int
+    soglia_scorte: int
 
-    _next_id = 1
+    _next_id: ClassVar[int] = 1
 
     def __post_init__(self):
         self.id = Materiale._next_id

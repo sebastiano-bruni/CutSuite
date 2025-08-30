@@ -1,0 +1,11 @@
+[
+    {
+        "nome": "Taglio uomo",
+        "descrizione": "Taglio per uomini",
+        "prezzo": 16.0,
+        "durata_minuti": 30,
+        "quantita_materiale": 0,
+        "id": 1,
+        "materiale_id": null
+    }
+]

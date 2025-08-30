@@ -1,179 +1,185 @@
+import sys
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QFrame, QGridLayout
 )
+from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt
 
+# Importa le classi delle view
 from view.GestioneClienti.gestioneClienti_ui import GestioneClienti
+from view.GestioneDipendenti.gestioneDipendenti_ui import GestioneDipendenti
+from view.GestioneMagazzino.gestioneMagazzino_ui import GestioneMagazzino
+from view.GestionePrenotazioni.gestionePrenotazioni_ui import GestionePrenotazioni
+from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
+from view.GestioneServizi.gestioneServizi_ui import GestioneServizi
 
 
 class HomeWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("CutSuite")
-        self.resize(1000, 700)  # Aumentata le dimensioni della finestra
-        self.client_window = None
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("CutSuite - Dashboard")
+        self.resize(1200, 800)
+        self.setMinimumSize(800, 600)
 
-        # Widget centrale
+        self.client_window = None
+        self.dipendenti_window = None
+        self.prenotazioni_window = None
+        self.servizi_window = None
+        self.magazzino_window = None
+        self.promozioni_window = None
+
+        self.init_ui()
+
+    def init_ui(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-
-        # Layout principale
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(0)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
-        # Barra superiore
-        top_bar = QWidget()
-        top_bar.setFixedHeight(50)
+        # Barra superiore (Top Bar)
+        top_bar = QFrame()
+        top_bar.setFixedHeight(60)
         top_bar.setStyleSheet("background-color: #f0f0f0; border-bottom: 1px solid #d0d0d0;")
-
         top_layout = QHBoxLayout(top_bar)
         top_layout.setContentsMargins(20, 0, 20, 0)
+        top_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         title_label = QLabel("CutSuite")
-        title_label.setStyleSheet("font-size: 18px; font-weight: bold;")
+        title_font = QFont("Arial", 22, QFont.Weight.Bold)
+        title_label.setFont(title_font)
+        title_label.setStyleSheet("color: #333333;")
 
         user_label = QLabel("Username: seba.staff")
-        user_label.setStyleSheet("font-size: 14px;")
+        user_font = QFont("Arial", 14)
+        user_label.setFont(user_font)
+        user_label.setStyleSheet("color: #555555;")
 
         logout_button = QPushButton("Logout")
-        logout_button.setFixedSize(80, 30)
+        logout_button.setFixedSize(90, 35)
         logout_button.setStyleSheet("""
             QPushButton {
-                background-color: #e0e0e0;
-                border: 1px solid #c0c0c0;
-                border-radius: 4px;
+                background-color: #e74c3c;
+                color: white;
+                border-radius: 5px;
                 padding: 5px;
+                font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #d0d0d0;
+                background-color: #c0392b;
             }
         """)
 
         top_layout.addWidget(title_label)
         top_layout.addStretch()
         top_layout.addWidget(user_label)
-        top_layout.addSpacing(10)
+        top_layout.addSpacing(15)
         top_layout.addWidget(logout_button)
-
         main_layout.addWidget(top_bar)
 
         # Area dei pulsanti
         buttons_frame = QFrame()
+        buttons_frame.setStyleSheet("background-color: #f8f8f8;")
         buttons_layout = QGridLayout(buttons_frame)
-        buttons_layout.setSpacing(20)
-        buttons_layout.setContentsMargins(40, 40, 40, 40)
+        buttons_layout.setSpacing(30)
+        buttons_layout.setContentsMargins(50, 50, 50, 50)
+        buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Creazione dei pulsanti con dimensioni diverse
         buttons_data = [
-            ("Gestione Clienti", "Gestione Prenotazioni"),
-            ("Gestione Servizi", "Gestione Dipendenti"),
-            ("Gestione Magazzino", "Gestione Promozioni")
+            ("Gestione Clienti", 0, 0),
+            ("Gestione Prenotazioni", 0, 1),
+            ("Gestione Servizi", 1, 0),
+            ("Gestione Dipendenti", 1, 1),
+            ("Gestione Magazzino", 2, 0),
+            ("Gestione Promozioni", 2, 1)
         ]
 
-        # Stile per i primi 4 bottoni (più grandi)
-        large_button_style = """
+        button_style_base = """
             QPushButton {
                 background-color: #ffffff;
-                border: 2px solid #d0d0d0;
-                border-radius: 8px;
-                padding: 25px;
-                font-size: 18px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #f8f8f8;
-                border-color: #a0a0a0;
-            }
-        """
-
-        # Stile per gli altri bottoni (più piccoli)
-        small_button_style = """
-            QPushButton {
-                background-color: #ffffff;
-                border: 2px solid #d0d0d0;
-                border-radius: 8px;
+                color: #2c3e50;
+                border: 2px solid #bdc3c7;
+                border-radius: 12px;
                 padding: 20px;
                 font-size: 16px;
                 font-weight: bold;
+                text-align: center;
             }
             QPushButton:hover {
-                background-color: #f8f8f8;
-                border-color: #a0a0a0;
+                background-color: #ecf0f1;
+                border-color: #95a5a6;
             }
         """
 
-        # Primi 4 bottoni (più grandi) - prime due righe
-        for row, (left_text, right_text) in enumerate(buttons_data[:2]):
-            left_button = QPushButton(left_text)
-            left_button.setStyleSheet(large_button_style)
-            left_button.setMinimumSize(350, 120)  # Dimensioni maggiori
+        for text, row, col in buttons_data:
+            button = QPushButton(text)
+            button.setStyleSheet(button_style_base)
+            button.setMinimumSize(250, 100)
+            buttons_layout.addWidget(button, row, col)
+            button.clicked.connect(lambda checked, t=text: self.handle_button_click(t))
 
-            right_button = QPushButton(right_text)
-            right_button.setStyleSheet(large_button_style)
-            right_button.setMinimumSize(350, 120)  # Dimensioni maggiori
+        main_layout.addWidget(buttons_frame)
+        main_layout.setStretchFactor(buttons_frame, 1)
 
-            buttons_layout.addWidget(left_button, row, 0)
-            buttons_layout.addWidget(right_button, row, 1)
-
-        # Ultimi 2 bottoni (più piccoli) - terza riga
-        row = 2
-        left_text, right_text = buttons_data[2]
-
-        # Bottone sinistro
-        left_button = QPushButton(left_text)
-        left_button.setStyleSheet(small_button_style)
-        left_button.setMinimumSize(300, 100)  # Più piccolo
-
-        # Bottone destro
-        right_button = QPushButton(right_text)
-        right_button.setStyleSheet(small_button_style)
-        right_button.setMinimumSize(300, 100)  # Più piccolo
-
-        buttons_layout.addWidget(left_button, row, 0)
-        buttons_layout.addWidget(right_button, row, 1)
-
-        # Configurazione dello stretching per centrare i pulsanti
-        buttons_layout.setColumnStretch(0, 1)
-        buttons_layout.setColumnStretch(1, 1)
-        buttons_layout.setRowStretch(0, 1)
-        buttons_layout.setRowStretch(1, 1)
-        buttons_layout.setRowStretch(2, 1)
-
-        main_layout.addWidget(buttons_frame, 1)
-
-        # Collega il pulsante di logout a una funzione
         logout_button.clicked.connect(self.logout)
 
-        # Collega i pulsanti di gestione a funzioni (da implementare)
-        self.connect_buttons(buttons_frame)
-
     def logout(self):
-        print("Logout effettuato")
-        # Qui andrebbe implementata la logica di logout
-
-    def connect_buttons(self, buttons_frame):
-        # Trova tutti i pulsanti e collega i segnali
-        for button in buttons_frame.findChildren(QPushButton):
-            if button.text() != "Logout":
-                button.clicked.connect(lambda checked, text=button.text(): self.handle_button_click(text))
+        print("Logout effettuato. Chiudo l'applicazione.")
+        self.close()
 
     def handle_button_click(self, button_text):
-        print(f"Clicked: {button_text}")
-        # Qui andrebbe implementata la logica per aprire la sezione corrispondente
         if button_text == "Gestione Clienti":
             self.open_client_management()
-
-            # Qui potrai aggiungere gli altri bottoni:
-            # elif button_text == "Gestione Prenotazioni":
-            #     self.open_booking_management()
-            # etc.
+        elif button_text == "Gestione Dipendenti":
+            self.open_dipendenti_management()
+        elif button_text == "Gestione Prenotazioni":
+            self.open_prenotazioni_management()
+        elif button_text == "Gestione Servizi":
+            self.open_servizi_management()
+        elif button_text == "Gestione Magazzino":
+            self.open_magazzino_management()
+        elif button_text == "Gestione Promozioni":
+            self.open_promozioni_management()
 
     def open_client_management(self):
-            if self.client_window is None:
-                self.client_window = GestioneClienti()
-            self.client_window.show()
-            self.client_window.raise_()  # porta davanti la finestra
-            self.client_window.activateWindow()
+        if self.client_window is None:
+            self.client_window = GestioneClienti()
+        self.client_window.show()
+        self.client_window.raise_()
+        self.client_window.activateWindow()
 
+    def open_dipendenti_management(self):
+        if self.dipendenti_window is None:
+            self.dipendenti_window = GestioneDipendenti()
+        self.dipendenti_window.show()
+        self.dipendenti_window.raise_()
+        self.dipendenti_window.activateWindow()
 
+    def open_magazzino_management(self):
+        if self.magazzino_window is None:
+            self.magazzino_window = GestioneMagazzino()
+        self.magazzino_window.show()
+        self.magazzino_window.raise_()
+        self.magazzino_window.activateWindow()
+
+    def open_servizi_management(self):
+        if self.servizi_window is None:
+            self.servizi_window = GestioneServizi()
+        self.servizi_window.show()
+        self.servizi_window.raise_()
+        self.servizi_window.activateWindow()
+
+    def open_promozioni_management(self):
+        if self.promozioni_window is None:
+            self.promozioni_window = GestionePromozioni()
+        self.promozioni_window.show()
+        self.promozioni_window.raise_()
+        self.promozioni_window.activateWindow()
+
+    def open_prenotazioni_management(self):
+        if self.prenotazioni_window is None:
+            self.prenotazioni_window = GestionePrenotazioni()
+        self.prenotazioni_window.show()
+        self.prenotazioni_window.raise_()
+        self.prenotazioni_window.activateWindow()

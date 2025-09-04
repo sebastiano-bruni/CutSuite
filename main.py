@@ -13,14 +13,21 @@ from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
 from view.GestioneServizi.gestioneServizi_ui import GestioneServizi
 
 def main():
-    # 1. Istanzia i gestori
+
+    # 1. Avvia la GUI
+    app = QApplication(sys.argv)
+    window = LoginWindow()
+    window.show()
+    sys.exit(app.exec())
+
+    # 2. Istanzia i gestori
     gestore_clienti = GestioneClienti()
     gestore_prenotazioni = GestionePrenotazioni()
     gestore_dipendenti = GestioneDipendenti()
     gestore_servizi = GestioneServizi()
     gestore_magazzino = GestioneMagazzino()
 
-    # 2. Crea GestoreBackup
+    # 3. Crea GestoreBackup
     gestore_backup = GestoreBackup(
         gestore_clienti,
         gestore_prenotazioni,
@@ -29,15 +36,9 @@ def main():
         gestore_magazzino
     )
 
-    # 3. Avvia scheduler (in background, non blocca PyQt)
+    # 4. Avvia scheduler (in background, non blocca PyQt)
     scheduler = SchedulerBackup(gestore_backup)
     scheduler.avvia_background()
-
-    # 4. Avvia la GUI
-    app = QApplication(sys.argv)
-    window = LoginWindow()
-    window.show()
-    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()

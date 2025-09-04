@@ -311,3 +311,6 @@ class GestioneMagazzino(QMainWindow):
         print("Aggiorno lista materiali...")
         self.controller.reload()
         self.display_materials(self.controller.get_tutti_materiali())
+
+    def listaMateriali(self):
+        return self.controller.get_tutti_materiali()

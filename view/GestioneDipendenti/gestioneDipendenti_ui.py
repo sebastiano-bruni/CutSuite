@@ -193,8 +193,8 @@ class GestioneDipendenti(QMainWindow):
         separator3.setStyleSheet("color: #cccccc;")
         main_layout.addWidget(separator3)
 
-        add_button = QPushButton("Inserisci dipendente")
-        add_button.setStyleSheet("""
+        self.add_button = QPushButton("Inserisci dipendente")
+        self.add_button.setStyleSheet("""
             QPushButton {
                 background-color: #28a745;
                 color: white;
@@ -208,8 +208,8 @@ class GestioneDipendenti(QMainWindow):
                 background-color: #218838;
             }
         """)
-        add_button.clicked.connect(self.handle_add)
-        main_layout.addWidget(add_button)
+        self.add_button.clicked.connect(self.handle_add)
+        main_layout.addWidget(self.add_button)
 
     def display_employees(self, employees):
         for i in reversed(range(self.employees_layout.count())):
@@ -325,3 +325,6 @@ class GestioneDipendenti(QMainWindow):
         print("Aggiorno lista dipendenti...")
         self.controller.reload()
         self.display_employees(self.controller.get_tutti_dipendenti())
+
+    def listaDipendenti(self):
+        return self.controller.get_tutti_dipendenti()

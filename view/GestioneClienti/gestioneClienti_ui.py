@@ -321,3 +321,6 @@ class GestioneClienti(QMainWindow):
         print("Aggiorno lista clienti...")
         self.controller.reload()
         self.display_clients(self.controller.get_tutti_clienti())
+
+    def listaClienti(self):
+        return self.controller.get_tutti_clienti()

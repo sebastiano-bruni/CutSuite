@@ -170,8 +170,8 @@ class GestioneServizi(QMainWindow):
         separator3.setStyleSheet("color: #cccccc;")
         main_layout.addWidget(separator3)
 
-        add_button = QPushButton("Inserisci servizio")
-        add_button.setStyleSheet("""
+        self.add_button = QPushButton("Inserisci servizio")
+        self.add_button.setStyleSheet("""
             QPushButton {
                 background-color: #28a745;
                 color: white;
@@ -185,8 +185,8 @@ class GestioneServizi(QMainWindow):
                 background-color: #218838;
             }
         """)
-        add_button.clicked.connect(self.handle_add)
-        main_layout.addWidget(add_button)
+        self.add_button.clicked.connect(self.handle_add)
+        main_layout.addWidget(self.add_button)
 
     def display_services(self, services):
         for i in reversed(range(self.services_layout.count())):
@@ -297,3 +297,6 @@ class GestioneServizi(QMainWindow):
         print("Aggiorno lista servizi...")
         self.controller.reload()
         self.display_services(self.controller.get_tutti_servizi())
+
+    def listaServizi(self):
+        return self.controller.get_tutti_servizi()

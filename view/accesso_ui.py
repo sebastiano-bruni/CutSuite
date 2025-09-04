@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+from auth.auth_service import authenticate
 
 
 class LoginWindow(QMainWindow):
@@ -18,7 +19,7 @@ class LoginWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
-        # Layout principale
+        # Layout principalef
         main_layout = QVBoxLayout(central_widget)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.setSpacing(30)
@@ -158,21 +159,9 @@ class LoginWindow(QMainWindow):
         username = self.username_input.text().strip()
         password = self.password_input.text().strip()
 
-        if not username:
-            self.show_error("Inserisci un username")
-            return
-
-        if not password:
-            self.show_error("Inserisci una password")
-            return
-
-        # Qui implementerai la logica di autenticazione
-        print(f"Tentativo di login: Username={username}, Password={password}")
-
-        # Esempio di login riuscito (da sostituire con la tua logica)
-        if username == "admin" and password == "admin":
-            self.show_success("Login riuscito!")
-            self.open_home_window(username)
+        user = authenticate(username, password)
+        if user:
+            self.open_home_window(user)
         else:
             self.show_error("Credenziali non valide")
 
@@ -185,10 +174,17 @@ class LoginWindow(QMainWindow):
         # Qui puoi implementare la visualizzazione del successo
         print(f"SUCCESSO: {message}")
 
-    def open_home_window(self, username):
-        # Qui aprirai la finestra principale
-        print(f"Apertura home window per: {username}")
-        # Esempio:
-        # self.home_window = HomeWindow(username)
-        # self.home_window.show()
-        # self.hide()
+    def open_home_window(self, user):
+        # scegli la home in base al ruolo (Proprietario = admin)
+        from auth.permission import role_of
+        ruolo = role_of(user)
+
+        if ruolo == "Proprietario":
+            from view.home_ui import HomeWindow
+            self.home_window = HomeWindow(user)
+        else:
+            from view.dipendente_home_ui import DipendenteHomeWindow
+            self.home_window = DipendenteHomeWindow(user)
+
+        self.home_window.show()
+        self.close()

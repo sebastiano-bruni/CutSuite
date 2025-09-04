@@ -286,3 +286,6 @@ class GestionePrenotazioni(QMainWindow):
         print("Aggiorno lista prenotazioni...")
         self.controller.reload()
         self.display_reservations(self.controller.get_tutte_prenotazioni())
+
+    def listaPrenotazioni(self):
+        return self.controller.get_tutte_prenotazioni()

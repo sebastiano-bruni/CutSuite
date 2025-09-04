@@ -13,11 +13,13 @@ from view.GestioneMagazzino.gestioneMagazzino_ui import GestioneMagazzino
 from view.GestionePrenotazioni.gestionePrenotazioni_ui import GestionePrenotazioni
 from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
 from view.GestioneServizi.gestioneServizi_ui import GestioneServizi
-
+from auth.permission import role_of
+from auth.permission import is_allowed
 
 class HomeWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, user, parent=None):
         super().__init__(parent)
+        self.user = user
         self.setWindowTitle("CutSuite - Dashboard")
         self.resize(1200, 800)
         self.setMinimumSize(800, 600)
@@ -51,7 +53,11 @@ class HomeWindow(QMainWindow):
         title_label.setFont(title_font)
         title_label.setStyleSheet("color: #333333;")
 
-        user_label = QLabel("Username: seba.staff")
+        #user_label = QLabel("Username: seba.staff")
+        display_name = f"{getattr(self.user, 'nome', '')} {getattr(self.user, 'cognome', '')}".strip() or self.user.username
+        user_label = QLabel(f"Utente: {display_name} ({role_of(self.user)})")
+        user_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+
         user_font = QFont("Arial", 14)
         user_label.setFont(user_font)
         user_label.setStyleSheet("color: #555555;")
@@ -116,8 +122,12 @@ class HomeWindow(QMainWindow):
             button = QPushButton(text)
             button.setStyleSheet(button_style_base)
             button.setMinimumSize(250, 100)
-            buttons_layout.addWidget(button, row, col)
-            button.clicked.connect(lambda checked, t=text: self.handle_button_click(t))
+
+            allowed = is_allowed(self.user, text)
+            if allowed:
+                buttons_layout.addWidget(button, row, col)
+                button.clicked.connect(lambda checked, t=text: self.handle_button_click(t))
+            # se non è allowed, non aggiungo il bottone → quindi sparisce dalla dashboard
 
         main_layout.addWidget(buttons_frame)
         main_layout.setStretchFactor(buttons_frame, 1)
@@ -125,7 +135,9 @@ class HomeWindow(QMainWindow):
         logout_button.clicked.connect(self.logout)
 
     def logout(self):
-        print("Logout effettuato. Chiudo l'applicazione.")
+        from view.accesso_ui import LoginWindow  # import locale per evitare cicli
+        self.login_window = LoginWindow()
+        self.login_window.show()
         self.close()
 
     def handle_button_click(self, button_text):

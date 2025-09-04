@@ -111,8 +111,8 @@ class DettagliDipendente(QMainWindow):
         buttons_layout.setSpacing(20)
         buttons_layout.setContentsMargins(0, 0, 0, 0)
 
-        edit_button = QPushButton("Modifica dipendente")
-        edit_button.setStyleSheet("""
+        self.edit_button = QPushButton("Modifica dipendente")
+        self.edit_button.setStyleSheet("""
             QPushButton {
                 background-color: #4a90e2;
                 color: white;
@@ -126,10 +126,10 @@ class DettagliDipendente(QMainWindow):
                 background-color: #357abd;
             }
         """)
-        edit_button.clicked.connect(self.handle_edit)
+        self.edit_button.clicked.connect(self.handle_edit)
 
-        delete_button = QPushButton("Elimina dipendente")
-        delete_button.setStyleSheet("""
+        self.delete_button = QPushButton("Elimina dipendente")
+        self.delete_button.setStyleSheet("""
             QPushButton {
                 background-color: #dc3545;
                 color: white;
@@ -143,11 +143,11 @@ class DettagliDipendente(QMainWindow):
                 background-color: #c82333;
             }
         """)
-        delete_button.clicked.connect(self.handle_delete)
+        self.delete_button.clicked.connect(self.handle_delete)
 
         buttons_layout.addStretch()
-        buttons_layout.addWidget(edit_button)
-        buttons_layout.addWidget(delete_button)
+        buttons_layout.addWidget(self.edit_button)
+        buttons_layout.addWidget(self.delete_button)
         buttons_layout.addStretch()
 
         main_layout.addWidget(buttons_container)

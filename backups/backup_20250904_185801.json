@@ -1,0 +1,185 @@
+{
+    "clienti": [
+        {
+            "nome": "seba",
+            "cognome": "bruni",
+            "cf": "BRNSST03P14E783J",
+            "email": "sebastiano.bruni.03@gmail.com",
+            "telefono": "1234312839",
+            "numVisite": 0,
+            "statoFedelta": "Non attivo",
+            "id": 1
+        },
+        {
+            "nome": "noemi",
+            "cognome": "bruni",
+            "cf": "BSDNFNRIEOSF12Q4",
+            "email": "noemi.bruni.04@gmail.com",
+            "telefono": "2342143128",
+            "numVisite": 0,
+            "statoFedelta": "Non attivo",
+            "id": 2
+        },
+        {
+            "nome": "Marco",
+            "cognome": "Verdi",
+            "cf": "qwertyuiopas3456",
+            "email": "marco.rossi@gmail.com",
+            "telefono": "2344429384",
+            "numVisite": 0,
+            "statoFedelta": "Attivo",
+            "id": 3
+        },
+        {
+            "nome": "sara",
+            "cognome": "scazzi",
+            "cf": "qwertyuiop123342",
+            "email": "sara,scazzi@gmail.com",
+            "telefono": "1234489826",
+            "numVisite": 0,
+            "statoFedelta": "Attivo",
+            "id": 5
+        },
+        {
+            "nome": "ciao",
+            "cognome": "patti",
+            "cf": "qwertyuiopa12345",
+            "email": "gfsd.gfs@gmail,com",
+            "telefono": "2345323542",
+            "numVisite": 0,
+            "statoFedelta": "Attivo",
+            "id": 6
+        }
+    ],
+    "prenotazioni": [
+        {
+            "cliente": {
+                "nome": "seba",
+                "cognome": "bruni",
+                "cf": "BRNSST03P14E783J",
+                "email": "sebastiano.bruni.03@gmail.com",
+                "telefono": "1234312839",
+                "numVisite": 0,
+                "statoFedelta": "Non attivo",
+                "id": 1
+            },
+            "servizio": {
+                "nome": "Taglio uomo",
+                "descrizione": "Taglio per uomini",
+                "prezzo": 16.0,
+                "durata_minuti": 30,
+                "materiale": null,
+                "quantita_materiale": 0,
+                "id": 1
+            },
+            "dipendente": {
+                "nome": "seba",
+                "cognome": "bruni",
+                "cf": "brnsnsdnds",
+                "email": "seba.bruni@gmail.com",
+                "telefono": "13243432143",
+                "username": "seba.bruni",
+                "password": "seba.bruni",
+                "permessi": 1,
+                "ruolo": "Proprietario",
+                "id": 3
+            },
+            "data": "2025-09-11 00:00:00",
+            "ora": "2025-09-11 09:00:00",
+            "durata_minuti": 30,
+            "prezzo": 16.0,
+            "stato": "confermata",
+            "email_cliente": "sebastiano.bruni.03@gmail.com",
+            "note": "",
+            "id": 1
+        },
+        {
+            "cliente": {
+                "nome": "noemi",
+                "cognome": "bruni",
+                "cf": "BSDNFNRIEOSF12Q4",
+                "email": "noemi.bruni.04@gmail.com",
+                "telefono": "2342143128",
+                "numVisite": 0,
+                "statoFedelta": "Non attivo",
+                "id": 2
+            },
+            "servizio": {
+                "nome": "Taglio uomo",
+                "descrizione": "Taglio per uomini",
+                "prezzo": 16.0,
+                "durata_minuti": 30,
+                "materiale": null,
+                "quantita_materiale": 0,
+                "id": 1
+            },
+            "dipendente": {
+                "nome": "elsa",
+                "cognome": "Vanni",
+                "cf": "",
+                "email": "seld.vav@gmail.com",
+                "telefono": "234352542",
+                "username": "elsa.vanni",
+                "password": "elsa.vanni",
+                "stipendio": 2000,
+                "ruolo": "Parrucchiere",
+                "id": 2
+            },
+            "data": "2025-09-06 00:00:00",
+            "ora": "2025-09-06 09:00:00",
+            "durata_minuti": 30,
+            "prezzo": 16.0,
+            "stato": "confermata",
+            "email_cliente": "noemi.bruni.04@gmail.com",
+            "note": "",
+            "id": 2
+        }
+    ],
+    "dipendenti": [
+        {
+            "nome": "elsa",
+            "cognome": "Vanni",
+            "cf": "",
+            "email": "seld.vav@gmail.com",
+            "telefono": "234352542",
+            "username": "elsa.vanni",
+            "password": "elsa.vanni",
+            "stipendio": 2000,
+            "ruolo": "Parrucchiere",
+            "id": 2
+        },
+        {
+            "nome": "seba",
+            "cognome": "bruni",
+            "cf": "brnsnsdnds",
+            "email": "seba.bruni@gmail.com",
+            "telefono": "13243432143",
+            "username": "seba.bruni",
+            "password": "seba.bruni",
+            "permessi": 1,
+            "ruolo": "Proprietario",
+            "id": 3
+        }
+    ],
+    "servizi": [
+        {
+            "nome": "Taglio uomo",
+            "descrizione": "Taglio per uomini",
+            "prezzo": 16.0,
+            "durata_minuti": 30,
+            "materiale": null,
+            "quantita_materiale": 0,
+            "id": 1
+        }
+    ],
+    "magazzino": [
+        {
+            "nome": "asasasa",
+            "categoria": "shampoo",
+            "prezzo": 1.5,
+            "quantita": 3,
+            "soglia_scorte": 3,
+            "id": 1
+        }
+    ]
+}

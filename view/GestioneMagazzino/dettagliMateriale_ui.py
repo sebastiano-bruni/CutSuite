@@ -124,8 +124,8 @@ class DettagliMateriale(QMainWindow):
         """)
         self.edit_button.clicked.connect(self.handle_edit)
 
-        delete_button = QPushButton("Elimina materiale")
-        delete_button.setStyleSheet("""
+        self.delete_button = QPushButton("Elimina materiale")
+        self.delete_button.setStyleSheet("""
             QPushButton {
                 background-color: #dc3545;
                 color: white;
@@ -139,11 +139,11 @@ class DettagliMateriale(QMainWindow):
                 background-color: #c82333;
             }
         """)
-        delete_button.clicked.connect(self.handle_delete)
+        self.delete_button.clicked.connect(self.handle_delete)
 
         buttons_layout.addStretch()
         buttons_layout.addWidget(self.edit_button)
-        buttons_layout.addWidget(delete_button)
+        buttons_layout.addWidget(self.delete_button)
         buttons_layout.addStretch()
 
         main_layout.addWidget(buttons_container)

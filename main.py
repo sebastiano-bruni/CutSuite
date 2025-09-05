@@ -26,6 +26,7 @@ def main():
     gestore_dipendenti = GestioneDipendenti()
     gestore_servizi = GestioneServizi()
     gestore_magazzino = GestioneMagazzino()
+    gestore_promozioni = GestionePromozioni()
 
     # 3. Crea GestoreBackup
     gestore_backup = GestoreBackup(

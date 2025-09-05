@@ -7,5 +7,14 @@
         "quantita_materiale": 0,
         "id": 1,
         "materiale_id": null
+    },
+    {
+        "nome": "taglio donna",
+        "descrizione": "asqsdsa",
+        "prezzo": 24.0,
+        "durata_minuti": 45,
+        "quantita_materiale": 2,
+        "id": 2,
+        "materiale_id": 1
     }
 ]

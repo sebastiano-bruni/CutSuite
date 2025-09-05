@@ -1,26 +1,29 @@
-# CutSuite/view/GestioneMagazzino/gestioneMagazzino_dipendente_ui.py
-from PyQt6.QtWidgets import QMessageBox
-from view.GestioneMagazzino.gestioneMagazzino_ui import GestioneMagazzino
-from view.GestioneMagazzino.dettagliMateriale_ui import DettagliMateriale
-from view.GestioneMagazzino.modificaMateriale_ui import ModificaMateriale
+# CutSuite/view/GestionePromozioni/gestionePromozioni_dipendente_ui.py
+from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
+from view.GestionePromozioni.dettagliPromozione_ui import DettagliPromozione
 
-class DettagliMaterialeDipendente(DettagliMateriale):
 
-    def __init__(self, materiale):
-        super().__init__(materiale)
+class DettagliMaterialeDipendente(DettagliPromozione):
 
-        if hasattr(self, "edit_button"):
-            self.edit_button.hide()
+    def __init__(self, promozione):
+        super().__init__(promozione)
 
-class GestioneMagazzinoDipendente(GestioneMagazzino):
+        self.edit_button.hide()
+        self.delete_button.hide()
+
+
+class GestioneMagazziniDipendente(GestionePromozioni):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def dettagli_materiale(self, mat):
+        # Nascondo il pulsante "Aggiungi promozione"
+        self.add_button.hide()
 
-        self.dettagli_window = DettagliMaterialeDipendente(mat)
-        self.dettagli_window.materiale_modificato.connect(self.aggiorna_lista_materiali)
+    def dettagli_promozione(self, promo):
+        """Mostra i dettagli della promozione in modalità read-only"""
+        self.dettagli_window = DettagliMaterialeDipendente(promo)
+        self.dettagli_window.promozione_modificata.connect(self.aggiorna_lista_promozioni)
         self.dettagli_window.show()
         self.dettagli_window.raise_()
         self.dettagli_window.activateWindow()

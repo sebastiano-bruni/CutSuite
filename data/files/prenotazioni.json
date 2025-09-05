@@ -24,5 +24,31 @@
         "cliente_id": 2,
         "servizio_id": 1,
         "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-05T00:00:00",
+        "ora": "2025-09-05T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "stato": "confermata",
+        "email_cliente": "marco.rossi@gmail.com",
+        "note": "",
+        "id": 3,
+        "cliente_id": 3,
+        "servizio_id": 1,
+        "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-05T00:00:00",
+        "ora": "2025-09-05T10:45:00",
+        "durata_minuti": 45,
+        "prezzo": 24.0,
+        "stato": "confermata",
+        "email_cliente": "gfsd.gfs@gmail,com",
+        "note": "hghhgghdf",
+        "id": 4,
+        "cliente_id": 6,
+        "servizio_id": 2,
+        "dipendente_id": 2
     }
 ]

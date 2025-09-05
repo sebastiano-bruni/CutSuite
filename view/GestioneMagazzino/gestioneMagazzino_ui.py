@@ -179,8 +179,8 @@ class GestioneMagazzino(QMainWindow):
         separator3.setStyleSheet("color: #cccccc;")
         main_layout.addWidget(separator3)
 
-        add_button = QPushButton("Inserisci materiale")
-        add_button.setStyleSheet("""
+        self.add_button = QPushButton("Inserisci materiale")
+        self.add_button.setStyleSheet("""
             QPushButton {
                 background-color: #28a745;
                 color: white;
@@ -194,8 +194,8 @@ class GestioneMagazzino(QMainWindow):
                 background-color: #218838;
             }
         """)
-        add_button.clicked.connect(self.handle_add)
-        main_layout.addWidget(add_button)
+        self.add_button.clicked.connect(self.handle_add)
+        main_layout.addWidget(self.add_button)
 
     def display_materials(self, materials):
         for i in reversed(range(self.materials_layout.count())):

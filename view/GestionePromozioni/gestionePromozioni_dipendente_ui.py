@@ -1,8 +1,9 @@
-# CutSuite/view/GestioneServizi/gestioneServizi_dipendente_ui.py
-from view.GestioneServizi.dettagliServizio_ui import DettagliServizio
-from view.GestioneServizi.gestioneServizi_ui import GestioneServizi
+# CutSuite/view/GestionePromozioni/gestionePromozioni_dipendente_ui.py
+from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
+from view.GestionePromozioni.dettagliPromozione_ui import DettagliPromozione
 
-class DettagliServizioDipendente(DettagliServizio):
+
+class DettagliPromozioneDipendente(DettagliPromozione):
 
     def __init__(self, promozione):
         super().__init__(promozione)
@@ -12,19 +13,19 @@ class DettagliServizioDipendente(DettagliServizio):
         if hasattr(self, "delete_button"):
             self.delete_button.hide()
 
-class GestioneServiziDipendente(GestioneServizi):
+
+class GestionePromozioniDipendente(GestionePromozioni):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # 🔥 Nascondo il pulsante "Inserisci servizio"
         if hasattr(self, "add_button"):
             self.add_button.hide()
 
-    def dettagli_servizio(self, dip):
+    def dettagli_promozione(self, promo):
         # Mostra la versione read-only dei dettagli
-        self.dettagli_window = DettagliServizioDipendente(dip)
-        self.dettagli_window.servizio_modificato.connect(self.aggiorna_lista_servizi)
+        self.dettagli_window = DettagliPromozioneDipendente(promo)
+        self.dettagli_window.promozione_modificata.connect(self.aggiorna_lista_promozioni)
         self.dettagli_window.show()
         self.dettagli_window.raise_()
         self.dettagli_window.activateWindow()

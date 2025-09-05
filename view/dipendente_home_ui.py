@@ -17,9 +17,9 @@ class DipendenteHomeWindow(HomeWindow):
         self.dipendenti_window.activateWindow()
 
     def open_magazzino_management(self):
-        from view.GestioneMagazzino.gestioneMagazzino_dipendente_ui import GestioneMagazzinoDipendente
+        from view.GestioneMagazzino.gestioneMagazzino_dipendente_ui import GestioneMagazziniDipendente
         if self.magazzino_window is None:
-            self.magazzino_window = GestioneMagazzinoDipendente()
+            self.magazzino_window = GestioneMagazziniDipendente()
         self.magazzino_window.show()
         self.magazzino_window.raise_()
         self.magazzino_window.activateWindow()
@@ -31,3 +31,11 @@ class DipendenteHomeWindow(HomeWindow):
         self.servizi_window.show()
         self.servizi_window.raise_()
         self.servizi_window.activateWindow()
+
+    def open_promozioni_management(self):
+        from view.GestionePromozioni.gestionePromozioni_dipendente_ui import GestionePromozioniDipendente
+        if self.promozioni_window is None:
+            self.promozioni_window = GestionePromozioniDipendente()
+        self.promozioni_window.show()
+        self.promozioni_window.raise_()
+        self.promozioni_window.activateWindow()

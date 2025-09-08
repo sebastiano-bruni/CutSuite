@@ -1,7 +1,7 @@
 from model.Prenotazione import Prenotazione
 from data.storage.storage_prenotazione import StoragePrenotazione
 from data.storage.storage_materiale import StorageMateriale   # 👈 aggiungi questa import
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class PrenotazioneController:
@@ -77,3 +77,23 @@ class PrenotazioneController:
     def reload(self):
         """Ricarica la lista delle prenotazioni dallo storage."""
         self.prenotazioni = self.storage.carica()
+        self.aggiorna_stati()
+
+    def aggiorna_stati(self):
+        """Aggiorna automaticamente lo stato delle prenotazioni."""
+        now = datetime.now()
+        modificato = False
+
+        for pren in self.prenotazioni:
+            # Calcola il momento in cui la prenotazione dovrebbe terminare
+            fine = datetime.combine(pren.data.date(), pren.ora.time()) + timedelta(minutes=pren.durata_minuti)
+
+            if pren.stato != "pagata":  # se non c'è ricevuta
+                if now < fine:
+                    pren.stato = "non effettuata"
+                else:
+                    pren.stato = "effettuata"
+                modificato = True
+
+        if modificato:
+            self.storage.salva(self.prenotazioni)

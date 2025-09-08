@@ -2,16 +2,23 @@ from model.Ricevuta import Ricevuta
 from data.storage.storage_ricevuta import StorageRicevuta
 from datetime import datetime
 from typing import List
+from controller.PrenotazioneController import PrenotazioneController
 
 
 class RicevutaController:
     def __init__(self):
         self.storage = StorageRicevuta("data/files/ricevute.json")
         self.ricevute = self.storage.carica()
+        self.prenotazione_controller = PrenotazioneController()
 
     def aggiungi_ricevuta(self, ricevuta: Ricevuta):
         self.ricevute.append(ricevuta)
         self.storage.salva(self.ricevute)
+
+        #prenotazione = self.prenotazione_controller.get_prenotazione_by_id(ricevuta.prenotazione.id)
+        #if prenotazione:
+        #    prenotazione.stato = "pagata"
+        #    self.prenotazione_controller.storage.salva(self.prenotazione_controller.prenotazioni)
 
     def get_ricevuta_by_id(self, id):
         return next((r for r in self.ricevute if r.id == id), None)

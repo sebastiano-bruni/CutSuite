@@ -33,5 +33,47 @@
         "data_emissione": "2025-08-31T00:06:55.132929",
         "id": 5,
         "prenotazione_id": 1
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T12:47:54.237231",
+        "id": 6,
+        "prenotazione_id": 1
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T12:48:06.191220",
+        "id": 7,
+        "prenotazione_id": 1
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T12:48:43.949712",
+        "id": 8,
+        "prenotazione_id": 2
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T12:51:05.858344",
+        "id": 9,
+        "prenotazione_id": 2
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T13:02:32.923515",
+        "id": 10,
+        "prenotazione_id": 1
+    },
+    {
+        "importo_totale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-08T13:17:31.352932",
+        "id": 11,
+        "prenotazione_id": 1
     }
 ]

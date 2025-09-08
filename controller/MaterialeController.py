@@ -57,3 +57,7 @@ class MaterialeController:
     def reload(self):
         """Ricarica la lista dei materiali dallo storage."""
         self.materiali = self.storage.carica()
+
+    def get_materiali_sotto_soglia(self):
+        """Restituisce i materiali con quantità inferiore o uguale a 20."""
+        return [m for m in self.materiali if m.quantita <= 20]

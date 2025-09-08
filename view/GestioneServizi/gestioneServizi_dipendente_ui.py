@@ -17,9 +17,10 @@ class GestioneServiziDipendente(GestioneServizi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # 🔥 Nascondo il pulsante "Inserisci servizio"
         if hasattr(self, "add_button"):
             self.add_button.hide()
+        if hasattr(self, "stats_button"):
+            self.stats_button.hide()
 
     def dettagli_servizio(self, dip):
         # Mostra la versione read-only dei dettagli

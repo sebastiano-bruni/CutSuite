@@ -262,7 +262,6 @@ class InserisciPrenotazione(QMainWindow):
                 ora=ora,
                 durata_minuti=servizio.durata_minuti,
                 prezzo=servizio.prezzo,
-                stato="confermata",
                 email_cliente=cliente.email,
                 note=note
             )

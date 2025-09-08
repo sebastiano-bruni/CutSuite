@@ -21,10 +21,16 @@ class StorageMateriale:
 
         materiali = []
         for m in data:
-            materiale_id = m.pop("id", None)  # Estrae l'id
-            materiale = Materiale(**m)  # Passa il resto dei dati
+
+            m_copy = m.copy()
+
+            materiale_id = m_copy.pop("id", None)
+
+            materiale = Materiale(**m_copy)
+
             if materiale_id is not None:
-                materiale.id = materiale_id  # Assegna l'id manualmente
+                materiale.id = materiale_id
+
             materiali.append(materiale)
 
         if materiali:

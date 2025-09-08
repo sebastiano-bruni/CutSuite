@@ -181,9 +181,20 @@ class DettagliPrenotazione(QMainWindow):
             )
             self.ricevuta_controller.aggiungi_ricevuta(nuova_ricevuta)
 
+            self.prenotazione_controller.aggiorna_prenotazione(
+                self.prenotazione.id,
+                stato="pagata"
+            )
+            self.prenotazione.stato = "pagata"
+            self.prenotazione_modificata.emit()
+
             # Genera il file PDF e lo salva
-            filename, _ = QFileDialog.getSaveFileName(self, "Salva ricevuta", f"ricevuta_{nuova_ricevuta.id}.pdf",
-                                                      "PDF Files (*.pdf)")
+            filename, _ = QFileDialog.getSaveFileName(
+                self,
+                "Salva ricevuta",
+                f"ricevuta_{nuova_ricevuta.id}.pdf",
+                "PDF Files (*.pdf)"
+            )
             if filename:
                 nuova_ricevuta.genera_pdf(filename)
                 QMessageBox.information(
@@ -195,7 +206,11 @@ class DettagliPrenotazione(QMainWindow):
                 QMessageBox.warning(self, "Annullato", "Operazione annullata.")
 
         except Exception as e:
-            QMessageBox.critical(self, "Errore", f"Si è verificato un errore nell'emissione della ricevuta: {str(e)}")
+            QMessageBox.critical(
+                self,
+                "Errore",
+                f"Si è verificato un errore nell'emissione della ricevuta: {str(e)}"
+            )
 
     def handle_edit(self):
         print(f"Apertura modifica per prenotazione: {self.prenotazione.id}")

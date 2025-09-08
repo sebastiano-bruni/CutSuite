@@ -188,6 +188,24 @@ class GestioneServizi(QMainWindow):
         self.add_button.clicked.connect(self.handle_add)
         main_layout.addWidget(self.add_button)
 
+        self.stats_button = QPushButton("Visualizza Statistiche Servizi")
+        self.stats_button.setStyleSheet("""
+            QPushButton {
+                background-color: #17a2b8;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 12px 24px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #138496;
+            }
+        """)
+        self.stats_button.clicked.connect(self.open_statistiche_servizi)
+        main_layout.addWidget(self.stats_button)
+
     def display_services(self, services):
         for i in reversed(range(self.services_layout.count())):
             item = self.services_layout.itemAt(i)
@@ -297,6 +315,12 @@ class GestioneServizi(QMainWindow):
         print("Aggiorno lista servizi...")
         self.controller.reload()
         self.display_services(self.controller.get_tutti_servizi())
+
+    def open_statistiche_servizi(self):
+        from view.GestioneServizi.statisticheServizi_ui import StatisticheServiziDialog
+        dialog = StatisticheServiziDialog(self.controller)
+        dialog.exec()
+
 
     def listaServizi(self):
         return self.controller.get_tutti_servizi()

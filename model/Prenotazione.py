@@ -15,9 +15,9 @@ class Prenotazione:
     ora: datetime
     durata_minuti: int
     prezzo: float
-    stato: str
     email_cliente: str
     note: str
+    stato: str = field(default="non effettuata")
 
     _next_id: ClassVar[int] = 1
 

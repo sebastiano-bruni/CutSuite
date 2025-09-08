@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMessageBox
 
 # Importa le classi delle view
 from view.GestioneClienti.gestioneClienti_ui import GestioneClienti
@@ -13,8 +14,10 @@ from view.GestioneMagazzino.gestioneMagazzino_ui import GestioneMagazzino
 from view.GestionePrenotazioni.gestionePrenotazioni_ui import GestionePrenotazioni
 from view.GestionePromozioni.gestionePromozioni_ui import GestionePromozioni
 from view.GestioneServizi.gestioneServizi_ui import GestioneServizi
+from controller.MaterialeController import MaterialeController
 from auth.permission import role_of
 from auth.permission import is_allowed
+
 
 class HomeWindow(QMainWindow):
     def __init__(self, user, parent=None):
@@ -32,6 +35,22 @@ class HomeWindow(QMainWindow):
         self.promozioni_window = None
 
         self.init_ui()
+        self.check_scorte_basse()
+
+    def check_scorte_basse(self):
+
+        materiale_controller = MaterialeController()
+        sotto_soglia = materiale_controller.get_materiali_sotto_soglia()
+
+        if sotto_soglia:
+            nomi = "\n".join(f"- {m.nome}" for m in sotto_soglia)
+
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setWindowTitle("Attenzione: Scorte basse")
+            msg.setText("I seguenti materiali hanno scorte sotto la soglia minima (20):")
+            msg.setInformativeText(nomi)
+            msg.exec()
 
     def init_ui(self):
         central_widget = QWidget()

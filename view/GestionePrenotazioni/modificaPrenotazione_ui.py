@@ -114,7 +114,7 @@ class ModificaPrenotazione(QMainWindow):
         clienti = self.cliente_controller.get_tutti_clienti()
         for i, c in enumerate(clienti):
             combo_box.addItem(f"{c.nome} {c.cognome}", c)
-            if c.id == selected_cliente.id:
+            if selected_cliente and c.id == selected_cliente.id:
                 combo_box.setCurrentIndex(i)
 
         combo_box.setStyleSheet("""
@@ -139,7 +139,7 @@ class ModificaPrenotazione(QMainWindow):
         servizi = self.servizio_controller.get_tutti_servizi()
         for i, s in enumerate(servizi):
             combo_box.addItem(f"{s.nome} ({s.prezzo} €)", s)
-            if s.id == selected_servizio.id:
+            if selected_servizio and s.id == selected_servizio.id:
                 combo_box.setCurrentIndex(i)
 
         combo_box.setStyleSheet("""
@@ -164,7 +164,7 @@ class ModificaPrenotazione(QMainWindow):
         dipendenti = self.dipendente_controller.get_tutti_dipendenti()
         for i, d in enumerate(dipendenti):
             combo_box.addItem(f"{d.nome} {d.cognome} ({d.ruolo})", d)
-            if d.id == selected_dipendente.id:
+            if selected_dipendente and d.id == selected_dipendente.id:
                 combo_box.setCurrentIndex(i)
 
         combo_box.setStyleSheet("""
@@ -239,6 +239,22 @@ class ModificaPrenotazione(QMainWindow):
         self.input_fields['note'] = text_edit
         return v_layout
 
+    def validate_data(self, cliente, servizio, dipendente, data_qdate):
+        errors = []
+        today = QDate.currentDate()
+
+        if cliente is None:
+            errors.append("• Devi selezionare un cliente.")
+        if servizio is None:
+            errors.append("• Devi selezionare un servizio.")
+        if dipendente is None:
+            errors.append("• Devi selezionare un dipendente.")
+
+        if data_qdate < today:
+            errors.append("• La data della prenotazione non può essere nel passato.")
+
+        return errors
+
     def handle_confirm(self):
         cliente = self.input_fields['cliente'].currentData()
         servizio = self.input_fields['servizio'].currentData()
@@ -247,8 +263,10 @@ class ModificaPrenotazione(QMainWindow):
         ora_qtime = self.input_fields['ora'].time()
         note = self.input_fields['note'].toPlainText().strip()
 
-        if not cliente or not servizio or not dipendente:
-            QMessageBox.critical(self, "Errore", "Seleziona cliente, servizio e dipendente.")
+        errors = self.validate_data(cliente, servizio, dipendente, data_qdate)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         data_obj = datetime(data_qdate.year(), data_qdate.month(), data_qdate.day())
@@ -264,7 +282,7 @@ class ModificaPrenotazione(QMainWindow):
             "durata_minuti": servizio.durata_minuti,
             "prezzo": servizio.prezzo,
             "stato": self.prenotazione.stato,
-            "email_cliente": cliente.email,
+            "email_cliente": cliente.email if cliente else self.prenotazione.email_cliente,
             "note": note
         }
 

@@ -61,7 +61,7 @@ class InserisciServizio(QMainWindow):
         self.input_fields = {}
 
         self.nome_input = self.create_input("Nome:", placeholder="Inserisci nome del servizio")
-        self.durata_spinbox = self.create_spinbox("Durata (minuti):", min_val=0, max_val=240, step=5)
+        self.durata_spinbox = self.create_spinbox("Durata (minuti):", min_val=5, max_val=240, step=5)
         self.prezzo_doublespinbox = self.create_doublespinbox("Prezzo:", min_val=0.00, max_val=1000.00, step=0.50)
         self.descrizione_input = self.create_textedit("Descrizione:", placeholder="Inserisci una descrizione")
         self.materiale_combo = self.create_material_combo("Materiale necessario:")
@@ -202,6 +202,18 @@ class InserisciServizio(QMainWindow):
         self.input_fields[label_text.replace(":", "").strip().lower()] = combo_box
         return v_layout
 
+    def validate_data(self, nome, descrizione, prezzo, durata):
+        errors = []
+        if not nome or len(nome) < 3:
+            errors.append("• Il nome del servizio deve contenere almeno 3 caratteri.")
+        if not descrizione:
+            errors.append("• La descrizione non può essere vuota.")
+        if prezzo <= 0:
+            errors.append("• Il prezzo deve essere maggiore di zero.")
+        if durata <= 0:
+            errors.append("• La durata deve essere maggiore di zero.")
+        return errors
+
     def handle_confirm(self):
         nome = self.input_fields['nome'].text().strip()
         durata_minuti = self.input_fields['durata (minuti)'].value()
@@ -212,8 +224,10 @@ class InserisciServizio(QMainWindow):
         selected_material = selected_material_combo.currentData()
         quantita_materiale = self.input_fields['quantità materiale'].value()
 
-        if not nome or not descrizione:
-            QMessageBox.critical(self, "Errore", "Nome e descrizione sono obbligatori.")
+        errors = self.validate_data(nome, descrizione, prezzo, durata_minuti)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         try:

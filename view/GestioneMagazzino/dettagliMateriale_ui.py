@@ -13,9 +13,10 @@ from view.GestioneMagazzino.modificaMateriale_ui import ModificaMateriale
 class DettagliMateriale(QMainWindow):
     materiale_modificato = pyqtSignal()
 
-    def __init__(self, materiale):
+    def __init__(self, materiale, parent_window=None):
         super().__init__()
         self.materiale = materiale
+        self.parent_window = parent_window  # Salva il riferimento alla finestra principale
         self.setWindowTitle("CutSuite - Dettagli materiale")
         self.resize(600, 500)
         self.init_ui()
@@ -170,6 +171,11 @@ class DettagliMateriale(QMainWindow):
                     "Successo",
                     f"Materiale {self.materiale.nome} eliminato con successo!"
                 )
+
+                # Chiama direttamente il metodo di aggiornamento della finestra principale
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_materiali'):
+                    self.parent_window.aggiorna_lista_materiali()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(

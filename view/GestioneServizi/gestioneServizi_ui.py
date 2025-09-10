@@ -307,7 +307,7 @@ class GestioneServizi(QMainWindow):
         self.inserisci_window.activateWindow()
 
     def dettagli_servizio(self, serv):
-        self.dettagli_window = DettagliServizio(serv)
+        self.dettagli_window = DettagliServizio(serv, parent_window=self)
         self.dettagli_window.servizio_modificato.connect(self.aggiorna_lista_servizi)
         self.dettagli_window.show()
         self.dettagli_window.raise_()

@@ -147,6 +147,16 @@ class ModificaPromozione(QMainWindow):
         self.input_fields[label_text.replace(":", "").strip().lower()] = spinbox
         return v_layout
 
+    def validate_data(self, nome, descrizione, sconto):
+        errors = []
+        if not nome or len(nome) < 3:
+            errors.append("• Il nome della promozione deve contenere almeno 3 caratteri.")
+        if not descrizione:
+            errors.append("• La descrizione non può essere vuota.")
+        if sconto <= 0:
+            errors.append("• Lo sconto deve essere maggiore di zero.")
+        return errors
+
     def handle_confirm(self):
         modified_data = {
             "nome": self.input_fields['nome'].text().strip(),
@@ -155,8 +165,10 @@ class ModificaPromozione(QMainWindow):
             "sconto_percentuale": self.input_fields['sconto (%)'].value()
         }
 
-        if not modified_data["nome"] or not modified_data["descrizione"]:
-            QMessageBox.critical(self, "Errore", "Nome e descrizione non possono essere vuoti.")
+        errors = self.validate_data(modified_data["nome"], modified_data["descrizione"], modified_data["sconto_percentuale"])
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         controller = PromozioneController()

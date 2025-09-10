@@ -1,3 +1,4 @@
+import re
 import sys
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -147,24 +148,17 @@ class ModificaCliente(QMainWindow):
 
         confirm_button = QPushButton("Conferma")
         confirm_button.setStyleSheet("""
-            QPushButton {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 15px 30px;
-                font-size: 16px;
-                font-weight: bold;
-                margin: 10px 0;
-            }
-            QPushButton:hover {
-                background-color: #218838;
-            }
-            QPushButton:pressed {
-                background-color: #1e7e34;
-            }
-        """)
-        confirm_button.setMinimumHeight(50)
+                            QPushButton {
+                                background-color: #28a745;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                padding: 15px 30px;
+                                font-size: 16px;
+                                font-weight: bold;
+                            }
+                            QPushButton:hover { background-color: #218838; }
+                        """)
         confirm_button.clicked.connect(self.handle_confirm)
 
         button_container = QWidget()
@@ -224,30 +218,28 @@ class ModificaCliente(QMainWindow):
 
     def validate_data(self, data):
         errors = []
-        if not data['nome']:
-            errors.append("• Il campo Nome è obbligatorio")
-        elif len(data['nome']) < 2:
-            errors.append("• Il nome deve essere di almeno 2 caratteri")
-        if not data['cognome']:
-            errors.append("• Il campo Cognome è obbligatorio")
-        elif len(data['cognome']) < 2:
-            errors.append("• Il cognome deve essere di almeno 2 caratteri")
-        if not data['email']:
-            errors.append("• Il campo Email è obbligatorio")
-        elif '@' not in data['email'] or '.' not in data['email']:
-            errors.append("• Inserisci un'email valida")
-        if not data['telefono']:
-            errors.append("• Il campo Telefono è obbligatorio")
-        elif len(data['telefono']) != 10 or not data['telefono'].isdigit():
-            errors.append("• Il telefono deve essere di 10 cifre")
-        if not data['codice_fiscale']:
-            errors.append("• Il campo Codice Fiscale è obbligatorio")
-        elif len(data['codice_fiscale']) != 16:
-            errors.append("• Il codice fiscale deve essere di 16 caratteri")
-        if not data['numero_appuntamenti']:
-            errors.append("• Il campo Numero Appuntamenti è obbligatorio")
-        elif not data['numero_appuntamenti'].isdigit():
-            errors.append("• Il numero di appuntamenti deve essere un numero")
+        # Definiamo il pattern per una email valida
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        if not (data['nome'] and len(data['nome']) >= 2):
+            errors.append("• Il nome deve contenere almeno 2 caratteri.")
+
+        if not (data['cognome'] and len(data['cognome']) >= 2):
+            errors.append("• Il cognome deve contenere almeno 2 caratteri.")
+
+        if not (data['email'] and re.match(email_regex, data['email'])):
+            errors.append("• L'indirizzo email non ha un formato valido.")
+
+        if not (data['telefono'] and len(data['telefono']) == 10 and data['telefono'].isdigit()):
+            errors.append("• Il numero di telefono deve essere di 10 cifre.")
+
+        if not (data['codice_fiscale'] and len(data['codice_fiscale']) == 16):
+            errors.append("• Il codice fiscale deve essere di 16 caratteri.")
+
+        if not data['numero_appuntamenti'].isdigit():
+            errors.append("• Il numero di appuntamenti deve essere un numero.")
+
         if not data.get('statoFedelta'):
-            errors.append("• Il campo Stato Fedeltà è obbligatorio")
+            errors.append("• Il campo Stato Fedeltà è obbligatorio.")
+
         return errors

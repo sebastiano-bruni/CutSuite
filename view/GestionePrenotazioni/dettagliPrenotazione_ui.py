@@ -15,9 +15,10 @@ from model.Ricevuta import Ricevuta
 class DettagliPrenotazione(QMainWindow):
     prenotazione_modificata = pyqtSignal()
 
-    def __init__(self, prenotazione):
+    def __init__(self, prenotazione, parent_window=None):
         super().__init__()
         self.prenotazione = prenotazione
+        self.parent_window = parent_window
         self.setWindowTitle("CutSuite - Dettagli prenotazione")
         self.resize(700, 600)
         self.init_ui()
@@ -248,7 +249,10 @@ class DettagliPrenotazione(QMainWindow):
                     "Successo",
                     f"Prenotazione #{self.prenotazione.id} eliminata con successo!"
                 )
-                self.prenotazione_modificata.emit()
+
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_prenotazioni'):
+                    self.parent_window.aggiorna_lista_prenotazioni()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(

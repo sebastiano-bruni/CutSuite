@@ -1,3 +1,4 @@
+import re
 import sys
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -24,8 +25,8 @@ class InserisciDipendente(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
-        main_layout.setSpacing(20)
-        main_layout.setContentsMargins(30, 30, 30, 30)
+        main_layout.setSpacing(5)
+        main_layout.setContentsMargins(10, 10, 10, 10)
 
         title_label = QLabel("CutSuite - Inserisci dipendente")
         title_label.setStyleSheet("""
@@ -49,8 +50,8 @@ class InserisciDipendente(QMainWindow):
             }
         """)
         form_layout = QVBoxLayout(form_frame)
-        form_layout.setSpacing(15)
-        form_layout.setContentsMargins(25, 25, 25, 25)
+        form_layout.setSpacing(5)
+        form_layout.setContentsMargins(10, 10, 10, 10)
 
         self.input_fields = {}
 
@@ -82,7 +83,7 @@ class InserisciDipendente(QMainWindow):
             if field_name == "password":
                 input_widget.setEchoMode(QLineEdit.EchoMode.Password)
             elif field_name == "cf":
-                input_widget.setMaxLength(16)
+                input_widget.setMaxLength(14)
 
             field_layout.addWidget(input_widget)
             form_layout.addLayout(field_layout)
@@ -165,6 +166,12 @@ class InserisciDipendente(QMainWindow):
         ruolo = self.ruolo_combo.currentText()
         stipendio = self.stipendio_spinbox.value()
 
+        errors = self.validate_data(nome, cognome, email, telefono, cf, username, password, stipendio)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
+            return
+
         controller = DipendenteController()
 
         try:
@@ -182,3 +189,35 @@ class InserisciDipendente(QMainWindow):
             self.close()
         except Exception as e:
             QMessageBox.critical(self, "Errore", f"Si è verificato un errore: {e}")
+
+
+    def validate_data(self, nome, cognome, email, telefono, cf, username, password, stipendio):
+        errors = []
+        # Definiamo il pattern (espressione regolare) per una email valida
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        if not (nome and len(nome) >= 2):
+            errors.append("• Il nome deve contenere almeno 2 caratteri.")
+
+        if not (cognome and len(cognome) >= 2):
+            errors.append("• Il cognome deve contenere almeno 2 caratteri.")
+
+        if not (email and re.match(email_regex, email)):
+            errors.append("• L'indirizzo email non ha un formato valido.")
+
+        if not (telefono and len(telefono) == 10 and telefono.isdigit()):
+            errors.append("• Il numero di telefono deve essere di 10 cifre.")
+
+        if not (cf and len(cf) == 16):
+            errors.append("• Il codice fiscale deve essere di 16 caratteri.")
+
+        if not (username and len(username) >= 3):
+            errors.append("• L'username deve contenere almeno 3 caratteri.")
+
+        if not (password and len(password) >= 4):
+            errors.append("• La password deve contenere almeno 4 caratteri.")
+
+        if not (stipendio and len(stipendio) >= 0):
+            errors.append("• Lo stipendio per un parrucchiere deve essere maggiore di zero.")
+
+        return errors

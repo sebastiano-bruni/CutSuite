@@ -1,4 +1,5 @@
 import sys
+import re  # Importato per la validazione dell'email
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QLineEdit, QFrame, QMessageBox, QComboBox
@@ -7,6 +8,7 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIntValidator
 
 from controller.ClienteController import ClienteController
+from model.Cliente import Cliente
 
 
 class InserisciCliente(QMainWindow):
@@ -86,7 +88,7 @@ class InserisciCliente(QMainWindow):
             input_field.setMinimumHeight(40)
 
             if field_name == "telefono":
-                input_field.setInputMask("9999999999")
+                input_field.setMaxLength(10)
             elif field_name == "cf":
                 input_field.setMaxLength(16)
 
@@ -102,32 +104,24 @@ class InserisciCliente(QMainWindow):
 
         main_layout.addWidget(form_frame)
 
+        confirm_button = QPushButton("Conferma")
+        confirm_button.setStyleSheet("""
+                    QPushButton {
+                        background-color: #28a745;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 15px 30px;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                    QPushButton:hover { background-color: #218838; }
+                """)
+        confirm_button.clicked.connect(self.handle_confirm)
+
         button_container = QWidget()
         button_layout = QHBoxLayout(button_container)
         button_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        confirm_button = QPushButton("Inserisci")
-        confirm_button.setStyleSheet("""
-            QPushButton {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 15px 30px;
-                font-size: 16px;
-                font-weight: bold;
-                margin: 10px 0;
-            }
-            QPushButton:hover {
-                background-color: #218838;
-            }
-            QPushButton:pressed {
-                background-color: #1e7e34;
-            }
-        """)
-        confirm_button.setMinimumHeight(50)
-        confirm_button.clicked.connect(self.handle_confirm)
-
         button_layout.addWidget(confirm_button)
         main_layout.addWidget(button_container)
         main_layout.addStretch()
@@ -147,21 +141,23 @@ class InserisciCliente(QMainWindow):
 
         controller = ClienteController()
         try:
-            nuovo_cliente = controller.aggiungi_cliente(nome, cognome, email, telefono, cf)
-            if nuovo_cliente:
-                QMessageBox.information(
-                    self,
-                    "Successo",
-                    f"Cliente {nuovo_cliente.nome} {nuovo_cliente.cognome} inserito con successo!"
-                )
-                self.cliente_inserito.emit()
-                self.close()
-            else:
-                QMessageBox.critical(
-                    self,
-                    "Errore",
-                    "Impossibile inserire il cliente."
-                )
+            nuovo_cliente = Cliente(
+                nome=nome,
+                cognome=cognome,
+                email=email,
+                telefono=telefono,
+                cf=cf
+            )
+            controller.crea_cliente(nuovo_cliente)
+
+            QMessageBox.information(
+                self,
+                "Successo",
+                f"Cliente {nuovo_cliente.nome} {nuovo_cliente.cognome} inserito con successo!"
+            )
+            self.cliente_inserito.emit()
+            self.close()
+
         except Exception as e:
             QMessageBox.critical(
                 self,
@@ -171,24 +167,23 @@ class InserisciCliente(QMainWindow):
 
     def validate_data(self, nome, cognome, email, telefono, cf):
         errors = []
-        if not nome:
-            errors.append("• Il campo Nome è obbligatorio.")
-        elif len(nome) < 2:
-            errors.append("• Il nome deve essere di almeno 2 caratteri.")
-        if not cognome:
-            errors.append("• Il campo Cognome è obbligatorio.")
-        elif len(cognome) < 2:
-            errors.append("• Il cognome deve essere di almeno 2 caratteri.")
-        if not email:
-            errors.append("• Il campo Email è obbligatorio.")
-        elif '@' not in email or '.' not in email:
-            errors.append("• Inserisci un'email valida.")
-        if not telefono:
-            errors.append("• Il campo Telefono è obbligatorio.")
-        elif len(telefono) != 10 or not telefono.isdigit():
-            errors.append("• Il telefono deve essere di 10 cifre.")
-        if not cf:
-            errors.append("• Il campo Codice Fiscale è obbligatorio.")
-        elif len(cf) != 16:
+        # Definiamo il pattern (espressione regolare) per una email valida
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        if not (nome and len(nome) >= 2):
+            errors.append("• Il nome deve contenere almeno 2 caratteri.")
+
+        if not (cognome and len(cognome) >= 2):
+            errors.append("• Il cognome deve contenere almeno 2 caratteri.")
+
+        if not (email and re.match(email_regex, email)):
+            errors.append("• L'indirizzo email non ha un formato valido.")
+
+        if not (telefono and len(telefono) == 10 and telefono.isdigit()):
+            errors.append("• Il numero di telefono deve essere di 10 cifre.")
+
+        if not (cf and len(cf) == 16):
             errors.append("• Il codice fiscale deve essere di 16 caratteri.")
+
         return errors
+

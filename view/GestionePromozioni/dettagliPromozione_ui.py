@@ -13,9 +13,10 @@ from view.GestionePromozioni.modificaPromozione_ui import ModificaPromozione
 class DettagliPromozione(QMainWindow):
     promozione_modificata = pyqtSignal()
 
-    def __init__(self, promozione):
+    def __init__(self, promozione, parent_window=None):
         super().__init__()
         self.promozione = promozione
+        self.parent_window = parent_window  # Salva il riferimento alla finestra principale
         self.setWindowTitle("CutSuite - Dettagli promozione")
         self.resize(600, 500)
         self.init_ui()
@@ -169,7 +170,11 @@ class DettagliPromozione(QMainWindow):
                     "Successo",
                     f"Promozione {self.promozione.nome} eliminata con successo!"
                 )
-                self.promozione_modificata.emit()
+
+                # Chiama direttamente il metodo di aggiornamento della finestra principale
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_promozioni'):
+                    self.parent_window.aggiorna_lista_promozioni()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(

@@ -155,6 +155,16 @@ class ModificaMateriale(QMainWindow):
         self.input_fields[label_text.replace(":", "").strip().lower()] = spinbox
         return v_layout
 
+    def validate_data(self, nome, categoria, prezzo):
+        errors = []
+        if not nome or len(nome) < 2:
+            errors.append("• Il nome deve contenere almeno 2 caratteri.")
+        if not categoria or len(categoria) < 2:
+            errors.append("• La categoria deve contenere almeno 2 caratteri.")
+        if prezzo <= 0:
+            errors.append("• Il prezzo deve essere maggiore di zero.")
+        return errors
+
     def handle_confirm(self):
         modified_data = {
             "nome": self.input_fields['nome'].text().strip(),
@@ -164,8 +174,10 @@ class ModificaMateriale(QMainWindow):
             "soglia_scorte": self.input_fields['soglia scorte'].value()
         }
 
-        if not modified_data["nome"] or not modified_data["categoria"]:
-            QMessageBox.critical(self, "Errore", "Nome e categoria non possono essere vuoti.")
+        errors = self.validate_data(modified_data["nome"], modified_data["categoria"], modified_data["prezzo"])
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         controller = MaterialeController()

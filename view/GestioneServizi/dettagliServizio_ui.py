@@ -13,9 +13,10 @@ from view.GestioneServizi.modificaServizio_ui import ModificaServizio
 class DettagliServizio(QMainWindow):
     servizio_modificato = pyqtSignal()
 
-    def __init__(self, servizio):
+    def __init__(self, servizio, parent_window=None):
         super().__init__()
         self.servizio = servizio
+        self.parent_window = parent_window
         self.setWindowTitle("CutSuite - Dettagli servizio")
         self.resize(600, 500)
         self.init_ui()
@@ -162,7 +163,7 @@ class DettagliServizio(QMainWindow):
             self,
             "Conferma eliminazione",
             f"Sei sicuro di voler eliminare il servizio {self.servizio.nome}?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,  # Corretta la riga
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
 
@@ -174,6 +175,10 @@ class DettagliServizio(QMainWindow):
                     "Successo",
                     f"Servizio {self.servizio.nome} eliminato con successo!"
                 )
+
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_servizi'):
+                    self.parent_window.aggiorna_lista_servizi()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(

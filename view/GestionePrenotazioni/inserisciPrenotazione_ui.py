@@ -236,6 +236,22 @@ class InserisciPrenotazione(QMainWindow):
         self.input_fields['note'] = text_edit
         return v_layout
 
+    def validate_data(self, cliente, servizio, dipendente, data_qdate):
+        errors = []
+        today = QDate.currentDate()
+
+        if cliente is None:
+            errors.append("• Devi selezionare un cliente.")
+        if servizio is None:
+            errors.append("• Devi selezionare un servizio.")
+        if dipendente is None:
+            errors.append("• Devi selezionare un dipendente.")
+
+        if data_qdate < today:
+            errors.append("• La data della prenotazione non può essere nel passato.")
+
+        return errors
+
     def handle_confirm(self):
         cliente = self.input_fields['cliente'].currentData()
         servizio = self.input_fields['servizio'].currentData()
@@ -244,8 +260,10 @@ class InserisciPrenotazione(QMainWindow):
         ora_qtime = self.input_fields['ora'].time()
         note = self.input_fields['note'].toPlainText().strip()
 
-        if not cliente or not servizio or not dipendente:
-            QMessageBox.critical(self, "Errore", "Seleziona cliente, servizio e dipendente.")
+        errors = self.validate_data(cliente, servizio, dipendente, data_qdate)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         # Converti QDate e QTime in oggetti datetime

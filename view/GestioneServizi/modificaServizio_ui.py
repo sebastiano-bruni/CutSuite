@@ -62,16 +62,10 @@ class ModificaServizio(QMainWindow):
                                                               max_val=1000.00, step=0.50)
         self.descrizione_input = self.create_textedit("Descrizione:", self.servizio.descrizione)
 
-        # Campi aggiuntivi per il materiale (non presenti nel mockup, ma utili)
-        # self.materiale_necessario_input = self.create_input("Materiale necessario:", self.servizio.materiale_necessario)
-        # self.quantita_materiale_spinbox = self.create_spinbox("Quantità materiale:", value=self.servizio.quantita_materiale, min_val=0, max_val=100)
-
         form_layout.addLayout(self.nome_input)
         form_layout.addLayout(self.durata_spinbox)
         form_layout.addLayout(self.prezzo_doublespinbox)
         form_layout.addLayout(self.descrizione_input)
-        # form_layout.addLayout(self.materiale_necessario_input)
-        # form_layout.addLayout(self.quantita_materiale_spinbox)
 
         main_layout.addWidget(form_frame)
 
@@ -176,18 +170,35 @@ class ModificaServizio(QMainWindow):
         self.input_fields[label_text.replace(":", "").strip().lower()] = spinbox
         return v_layout
 
+    def validate_data(self, nome, descrizione, prezzo, durata):
+        errors = []
+        if not nome or len(nome) < 3:
+            errors.append("• Il nome del servizio deve contenere almeno 3 caratteri.")
+        if not descrizione:
+            errors.append("• La descrizione non può essere vuota.")
+        if prezzo <= 0:
+            errors.append("• Il prezzo deve essere maggiore di zero.")
+        if durata <= 0:
+            errors.append("• La durata deve essere maggiore di zero.")
+        return errors
+
     def handle_confirm(self):
         modified_data = {
             "nome": self.input_fields['nome'].text().strip(),
             "durata_minuti": self.input_fields['durata (minuti)'].value(),
             "prezzo": self.input_fields['prezzo'].value(),
             "descrizione": self.input_fields['descrizione'].toPlainText().strip()
-            # "materiale_necessario": self.input_fields['materiale necessario'].text().strip(),
-            # "quantita_materiale": self.input_fields['quantità materiale'].value()
         }
 
-        if not modified_data["nome"] or not modified_data["descrizione"]:
-            QMessageBox.critical(self, "Errore", "Nome e descrizione non possono essere vuoti.")
+        errors = self.validate_data(
+            modified_data["nome"],
+            modified_data["descrizione"],
+            modified_data["prezzo"],
+            modified_data["durata_minuti"]
+        )
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         controller = ServizioController()

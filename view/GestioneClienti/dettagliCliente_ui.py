@@ -13,9 +13,10 @@ from view.GestioneClienti.modificaCliente_ui import ModificaCliente
 class DettagliCliente(QMainWindow):
     cliente_modificato = pyqtSignal()
 
-    def __init__(self, cliente):
+    def __init__(self, cliente, parent_window=None):
         super().__init__()
         self.cliente = cliente
+        self.parent_window = parent_window  # Salva il riferimento alla finestra principale
         self.setWindowTitle("CutSuite - Dettagli cliente")
         self.resize(600, 500)
         self.init_ui()
@@ -173,6 +174,11 @@ class DettagliCliente(QMainWindow):
                     "Successo",
                     f"Cliente {self.cliente.nome} {self.cliente.cognome} eliminato con successo!"
                 )
+
+                # Chiama direttamente il metodo di aggiornamento della finestra principale
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_clienti'):
+                    self.parent_window.aggiorna_lista_clienti()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(
@@ -187,3 +193,4 @@ class DettagliCliente(QMainWindow):
         self.client_window.show()
         self.client_window.raise_()
         self.client_window.activateWindow()
+

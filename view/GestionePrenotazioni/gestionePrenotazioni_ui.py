@@ -276,7 +276,7 @@ class GestionePrenotazioni(QMainWindow):
 
     def dettagli_prenotazione(self, res):
         from view.GestionePrenotazioni.dettagliPrenotazione_ui import DettagliPrenotazione
-        self.dettagli_window = DettagliPrenotazione(res)
+        self.dettagli_window = DettagliPrenotazione(res, parent_window=self)
         self.dettagli_window.prenotazione_modificata.connect(self.aggiorna_lista_prenotazioni)
         self.dettagli_window.show()
         self.dettagli_window.raise_()

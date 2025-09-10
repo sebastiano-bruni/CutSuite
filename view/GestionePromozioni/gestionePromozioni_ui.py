@@ -282,7 +282,7 @@ class GestionePromozioni(QMainWindow):
         self.inserisci_window.activateWindow()
 
     def dettagli_promozione(self, promo):
-        self.dettagli_window = DettagliPromozione(promo)
+        self.dettagli_window = DettagliPromozione(promo, parent_window=self)
         self.dettagli_window.promozione_modificata.connect(self.aggiorna_lista_promozioni)
         self.dettagli_window.show()
         self.dettagli_window.raise_()

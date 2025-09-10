@@ -28,25 +28,5 @@
         "numVisite": 0,
         "statoFedelta": "Attivo",
         "id": 3
-    },
-    {
-        "nome": "sara",
-        "cognome": "scazzi",
-        "cf": "qwertyuiop123342",
-        "email": "sara,scazzi@gmail.com",
-        "telefono": "1234489826",
-        "numVisite": 0,
-        "statoFedelta": "Attivo",
-        "id": 5
-    },
-    {
-        "nome": "ciao",
-        "cognome": "patti",
-        "cf": "qwertyuiopa12345",
-        "email": "gfsd.gfs@gmail,com",
-        "telefono": "2345323542",
-        "numVisite": 0,
-        "statoFedelta": "Attivo",
-        "id": 6
     }
 ]

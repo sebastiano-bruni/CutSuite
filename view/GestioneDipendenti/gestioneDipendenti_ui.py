@@ -314,7 +314,7 @@ class GestioneDipendenti(QMainWindow):
         self.inserisci_window.activateWindow()
 
     def dettagli_dipendente(self, dip):
-        self.dettagli_window = DettagliDipendente(dip)
+        self.dettagli_window = DettagliDipendente(dip, parent_window=self)
         # Connetti il segnale della finestra dei dettagli
         self.dettagli_window.dipendente_modificato.connect(self.aggiorna_lista_dipendenti)
         self.dettagli_window.show()

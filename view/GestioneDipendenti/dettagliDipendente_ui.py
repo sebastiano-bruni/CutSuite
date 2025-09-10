@@ -13,9 +13,10 @@ from view.GestioneDipendenti.modificaDipendente_ui import ModificaDipendente
 class DettagliDipendente(QMainWindow):
     dipendente_modificato = pyqtSignal()
 
-    def __init__(self, dipendente):
+    def __init__(self, dipendente, parent_window=None):
         super().__init__()
         self.dipendente = dipendente
+        self.parent_window = parent_window  # Salva il riferimento alla finestra principale
         self.setWindowTitle("CutSuite - Dettagli Dipendente")
         self.resize(600, 500)
         self.init_ui()
@@ -174,6 +175,11 @@ class DettagliDipendente(QMainWindow):
                     "Successo",
                     f"Dipendente {self.dipendente.nome} {self.dipendente.cognome} eliminato con successo!"
                 )
+
+                # Chiama direttamente il metodo di aggiornamento della finestra principale
+                if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_dipendenti'):
+                    self.parent_window.aggiorna_lista_dipendenti()
+
                 self.close()
             except Exception as e:
                 QMessageBox.critical(

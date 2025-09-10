@@ -1,3 +1,4 @@
+import re
 import sys
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -25,8 +26,8 @@ class ModificaDipendente(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
-        main_layout.setSpacing(20)
-        main_layout.setContentsMargins(30, 30, 30, 30)
+        main_layout.setSpacing(5)
+        main_layout.setContentsMargins(10, 10, 10, 10)
 
         title_label = QLabel("CutSuite - Modifica dipendente")
         title_label.setStyleSheet("""
@@ -50,8 +51,8 @@ class ModificaDipendente(QMainWindow):
             }
         """)
         form_layout = QVBoxLayout(form_frame)
-        form_layout.setSpacing(15)
-        form_layout.setContentsMargins(25, 25, 25, 25)
+        form_layout.setSpacing(5)
+        form_layout.setContentsMargins(10, 10, 10, 10)
 
         fields_data = [
             ("Nome:", "nome", self.dipendente.nome, QLineEdit()),
@@ -60,9 +61,7 @@ class ModificaDipendente(QMainWindow):
             ("Telefono:", "telefono", self.dipendente.telefono, QLineEdit()),
             ("Codice Fiscale:", "cf", getattr(self.dipendente, 'cf', ''), QLineEdit()),
             ("Ruolo:", "ruolo", getattr(self.dipendente, 'ruolo', 'Proprietario'), QLineEdit()),
-            # Valore di default per Proprietario
             ("Stipendio:", "stipendio", str(getattr(self.dipendente, 'stipendio', 0)), QSpinBox()),
-            # Valore di default per Proprietario
             ("Username:", "username", self.dipendente.username, QLineEdit()),
             ("Password:", "password", self.dipendente.password, QLineEdit()),
         ]
@@ -90,7 +89,7 @@ class ModificaDipendente(QMainWindow):
                     widget.setEchoMode(QLineEdit.EchoMode.Password)
             elif isinstance(widget, QSpinBox):
                 widget.setRange(0, 100000)
-                widget.setValue(int(current_value) if current_value.isdigit() else 0)
+                widget.setValue(int(current_value) if str(current_value).isdigit() else 0)
                 widget.setStyleSheet("""
                     QSpinBox {
                         padding: 10px;
@@ -98,6 +97,11 @@ class ModificaDipendente(QMainWindow):
                         border-radius: 5px;
                     }
                 """)
+
+            # Nascondi campo stipendio per Proprietario
+            if field_name == "stipendio" and getattr(self.dipendente, 'ruolo', 'Proprietario') == 'Proprietario':
+                label.hide()
+                widget.hide()
 
             field_layout.addWidget(widget)
             form_layout.addLayout(field_layout)
@@ -127,6 +131,29 @@ class ModificaDipendente(QMainWindow):
         main_layout.addWidget(button_container)
         main_layout.addStretch()
 
+    def validate_data(self, data):
+        errors = []
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        if not (data['nome'] and len(data['nome']) >= 2):
+            errors.append("• Il nome deve contenere almeno 2 caratteri.")
+        if not (data['cognome'] and len(data['cognome']) >= 2):
+            errors.append("• Il cognome deve contenere almeno 2 caratteri.")
+        if not (data['cf'] and len(data['cf']) == 16):
+            errors.append("• Il codice fiscale deve essere di 16 caratteri.")
+        if not (data['email'] and re.match(email_regex, data['email'])):
+            errors.append("• L'indirizzo email non ha un formato valido (es. nome@dominio.com).")
+        if not (data['telefono'] and len(data['telefono']) == 10 and data['telefono'].isdigit()):
+            errors.append("• Il numero di telefono deve essere di 10 cifre.")
+        if not (data['username'] and len(data['username']) >= 3):
+            errors.append("• L'username deve contenere almeno 3 caratteri.")
+        if not (data['password'] and len(data['password']) >= 4):
+            errors.append("• La password deve contenere almeno 4 caratteri.")
+        if data['ruolo'] == "Parrucchiere" and data['stipendio'] <= 0:
+            errors.append("• Lo stipendio per un parrucchiere deve essere maggiore di zero.")
+
+        return errors
+
     def handle_confirm(self):
         modified_data = {}
         modified_data['nome'] = self.input_fields['nome'].text()
@@ -138,6 +165,12 @@ class ModificaDipendente(QMainWindow):
         modified_data['stipendio'] = self.input_fields['stipendio'].value()
         modified_data['username'] = self.input_fields['username'].text()
         modified_data['password'] = self.input_fields['password'].text()
+
+        errors = self.validate_data(modified_data)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
+            return
 
         controller = DipendenteController()
 

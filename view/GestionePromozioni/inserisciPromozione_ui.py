@@ -173,6 +173,18 @@ class InserisciPromozione(QMainWindow):
         self.input_fields[label_text.replace(":", "").strip().lower()] = date_edit
         return v_layout
 
+    def validate_data(self, nome, descrizione, sconto, data_inizio, data_fine):
+        errors = []
+        if not nome or len(nome) < 3:
+            errors.append("• Il nome della promozione deve contenere almeno 3 caratteri.")
+        if not descrizione:
+            errors.append("• La descrizione non può essere vuota.")
+        if sconto <= 0:
+            errors.append("• Lo sconto deve essere maggiore di zero.")
+        if data_fine < data_inizio:
+            errors.append("• La data di fine non può essere precedente alla data di inizio.")
+        return errors
+
     def handle_confirm(self):
         nome = self.input_fields['nome'].text().strip()
         descrizione = self.input_fields['descrizione'].toPlainText().strip()
@@ -184,8 +196,10 @@ class InserisciPromozione(QMainWindow):
         data_inizio = datetime(data_inizio_qdate.year(), data_inizio_qdate.month(), data_inizio_qdate.day())
         data_fine = datetime(data_fine_qdate.year(), data_fine_qdate.month(), data_fine_qdate.day())
 
-        if not nome or not descrizione:
-            QMessageBox.critical(self, "Errore", "Nome e descrizione sono obbligatori.")
+        errors = self.validate_data(nome, descrizione, sconto, data_inizio, data_fine)
+        if errors:
+            error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
+            QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
         controller = PromozioneController()

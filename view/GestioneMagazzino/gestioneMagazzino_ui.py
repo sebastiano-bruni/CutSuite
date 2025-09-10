@@ -300,7 +300,7 @@ class GestioneMagazzino(QMainWindow):
         self.inserisci_window.activateWindow()
 
     def dettagli_materiale(self, mat):
-        self.dettagli_window = DettagliMateriale(mat)
+        self.dettagli_window = DettagliMateriale(mat, parent_window=self)
         # Connetti il segnale della finestra dei dettagli
         self.dettagli_window.materiale_modificato.connect(self.aggiorna_lista_materiali)
         self.dettagli_window.show()

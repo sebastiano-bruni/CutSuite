@@ -311,7 +311,8 @@ class GestioneClienti(QMainWindow):
         self.inserisci_window.activateWindow()
 
     def dettagli_cliente(self, client):
-        self.dettagli_window = DettagliCliente(client)
+        self.dettagli_window = DettagliCliente(client, parent_window=self)
+        # La riga seguente è ancora utile se vuoi aggiornare dopo una modifica
         self.dettagli_window.cliente_modificato.connect(self.aggiorna_lista_clienti)
         self.dettagli_window.show()
         self.dettagli_window.raise_()

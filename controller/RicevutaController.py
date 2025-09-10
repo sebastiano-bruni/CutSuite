@@ -14,11 +14,12 @@ class RicevutaController:
         self.promozione_controller = PromozioneController()
 
     def aggiungi_ricevuta(self, ricevuta: Ricevuta):
-
         cliente_id = ricevuta.prenotazione.cliente.id
         importo = ricevuta.importo_totale
 
-        sconto = self.promozione_controller.calcola_sconto_cliente(cliente_id)
+        promozioni = self.promozione_controller.get_tutte_promozioni()
+
+        sconto = self.promozione_controller.calcola_sconto_cliente(promozioni, cliente_id)
         importo_finale = importo * (1 - sconto)
 
         ricevuta.sconto_applicato = sconto

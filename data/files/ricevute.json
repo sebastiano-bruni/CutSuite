@@ -160,5 +160,32 @@
         "importo_finale": 16.0,
         "dettagli": "Taglio per uomini",
         "data_emissione": "2025-09-10T14:06:49.058714"
+    },
+    {
+        "id": 19,
+        "prenotazione_id": 15,
+        "importo_totale": 16.0,
+        "sconto_applicato": 0.0,
+        "importo_finale": 16.0,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-10T17:23:16.570685"
+    },
+    {
+        "id": 20,
+        "prenotazione_id": 16,
+        "importo_totale": 16.0,
+        "sconto_applicato": 0.3,
+        "importo_finale": 11.2,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-10T17:23:47.355108"
+    },
+    {
+        "id": 21,
+        "prenotazione_id": 17,
+        "importo_totale": 16.0,
+        "sconto_applicato": 0.3,
+        "importo_finale": 11.2,
+        "dettagli": "Taglio per uomini",
+        "data_emissione": "2025-09-10T17:23:51.567654"
     }
 ]

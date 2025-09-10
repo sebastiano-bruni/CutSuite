@@ -39,19 +39,6 @@
         "dipendente_id": 2
     },
     {
-        "data": "2025-09-05T00:00:00",
-        "ora": "2025-09-05T10:45:00",
-        "durata_minuti": 45,
-        "prezzo": 24.0,
-        "email_cliente": "gfsd.gfs@gmail,com",
-        "note": "hghhgghdf",
-        "stato": "pagata",
-        "id": 4,
-        "cliente_id": 6,
-        "servizio_id": 2,
-        "dipendente_id": 2
-    },
-    {
         "data": "2025-09-08T00:00:00",
         "ora": "2025-09-08T09:00:00",
         "durata_minuti": 30,
@@ -61,19 +48,6 @@
         "stato": "pagata",
         "id": 6,
         "cliente_id": 1,
-        "servizio_id": 1,
-        "dipendente_id": 2
-    },
-    {
-        "data": "2025-09-07T00:00:00",
-        "ora": "2025-09-07T09:00:00",
-        "durata_minuti": 30,
-        "prezzo": 16.0,
-        "email_cliente": "gfsd.gfs@gmail,com",
-        "note": "",
-        "stato": "pagata",
-        "id": 7,
-        "cliente_id": null,
         "servizio_id": 1,
         "dipendente_id": 2
     },
@@ -152,6 +126,58 @@
         "stato": "effettuata",
         "id": 13,
         "cliente_id": 2,
+        "servizio_id": 1,
+        "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-10T00:00:00",
+        "ora": "2025-09-10T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "email_cliente": "marco.rossi@gmail.com",
+        "note": "",
+        "stato": "effettuata",
+        "id": 14,
+        "cliente_id": 3,
+        "servizio_id": 1,
+        "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-10T00:00:00",
+        "ora": "2025-09-10T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "email_cliente": "marco.rossi@gmail.com",
+        "note": "",
+        "stato": "pagata",
+        "id": 15,
+        "cliente_id": 3,
+        "servizio_id": 1,
+        "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-10T00:00:00",
+        "ora": "2025-09-10T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "email_cliente": "sebastiano.bruni.03@gmail.com",
+        "note": "",
+        "stato": "pagata",
+        "id": 16,
+        "cliente_id": 1,
+        "servizio_id": 1,
+        "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-10T00:00:00",
+        "ora": "2025-09-10T10:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "email_cliente": "sebastiano.bruni.03@gmail.com",
+        "note": "",
+        "stato": "pagata",
+        "id": 17,
+        "cliente_id": 1,
         "servizio_id": 1,
         "dipendente_id": 2
     }

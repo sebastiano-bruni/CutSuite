@@ -175,7 +175,6 @@ class DettagliPrenotazione(QMainWindow):
         # Controlla se esiste già una ricevuta e nasconde il pulsante se necessario
         self.controlla_ricevuta_esistente()
 
-    # -------------------- LOGICA RICEVUTA --------------------
     def controlla_ricevuta_esistente(self):
         ricevuta = next((r for r in self.ricevuta_controller.get_tutte_ricevute()
                          if r.prenotazione.id == self.prenotazione.id), None)
@@ -227,7 +226,6 @@ class DettagliPrenotazione(QMainWindow):
                 f"Si è verificato un errore nell'emissione della ricevuta: {str(e)}"
             )
 
-    # -------------------- MODIFICA / CANCELLA --------------------
     def handle_edit(self):
         print(f"Apertura modifica per prenotazione: {self.prenotazione.id}")
         self.modifica_prenotazione()

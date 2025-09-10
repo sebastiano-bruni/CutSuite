@@ -5,7 +5,7 @@
         "sconto_percentuale": 30,
         "data_inizio": "2025-08-30T00:00:00",
         "data_fine": "2025-10-07T00:00:00",
-        "soglia_promozione": 10,
+        "soglia_promozione": 5,
         "id": 2
     }
 ]

@@ -1,5 +1,6 @@
 from model.Promozione import Promozione
 from data.storage.storage_promozione import StoragePromozione
+from controller.PrenotazioneController import PrenotazioneController
 
 class PromozioneController:
     def __init__(self):
@@ -34,20 +35,20 @@ class PromozioneController:
         return [p for p in self.promozioni if nome in p.nome.lower()]
 
     def reload(self):
-        """Ricarica la lista delle promozioni dallo storage."""
+
         self.promozioni = self.storage.carica()
 
-    def calcola_sconto_cliente(self, cliente_id: str) -> float:
+    def calcola_sconto_cliente(self, promozioni: list, cliente_id: str) -> float:
 
-        from controller.PrenotazioneController import PrenotazioneController
         prenotazione_controller = PrenotazioneController()
-        numero = prenotazione_controller.get_numero_prenotazioni_pagate(cliente_id)
+        numero_prenotazioni = prenotazione_controller.get_numero_prenotazioni_pagate(cliente_id)
 
-        if numero >= 5:
-            return 0.05  # 5%
-        elif numero >= 10:
-            return 0.10  # 10%
-        elif numero >= 20:
-            return 0.20  #20%
-        else:
-            return 0.0
+        sconto_massimo = 0.0
+
+        for promo in promozioni:
+            if promo.valida() and numero_prenotazioni >= promo.soglia_promozione:
+                sconto = promo.sconto_percentuale / 100
+                if sconto > sconto_massimo:
+                    sconto_massimo = sconto
+
+        return sconto_massimo

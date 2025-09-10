@@ -171,9 +171,20 @@ class DettagliPrenotazione(QMainWindow):
         main_layout.addLayout(buttons_layout)
         main_layout.addStretch()
 
+        # Controlla se esiste già una ricevuta e nasconde il pulsante se necessario
+        self.controlla_ricevuta_esistente()
+
+    # -------------------- LOGICA RICEVUTA --------------------
+    def controlla_ricevuta_esistente(self):
+        ricevuta = next((r for r in self.ricevuta_controller.get_tutte_ricevute()
+                         if r.prenotazione.id == self.prenotazione.id), None)
+        if ricevuta:
+            self.receipt_button.hide()
+        else:
+            self.receipt_button.show()
+
     def handle_receipt_emission(self):
         try:
-            # Creazione di un oggetto Ricevuta e stampa
             nuova_ricevuta = Ricevuta(
                 prenotazione=self.prenotazione,
                 importo_totale=self.prenotazione.prezzo,
@@ -188,7 +199,10 @@ class DettagliPrenotazione(QMainWindow):
             self.prenotazione.stato = "pagata"
             self.prenotazione_modificata.emit()
 
-            # Genera il file PDF e lo salva
+            # Nasconde il pulsante dopo emissione
+            self.receipt_button.hide()
+
+            # Genera il PDF
             filename, _ = QFileDialog.getSaveFileName(
                 self,
                 "Salva ricevuta",
@@ -212,6 +226,7 @@ class DettagliPrenotazione(QMainWindow):
                 f"Si è verificato un errore nell'emissione della ricevuta: {str(e)}"
             )
 
+    # -------------------- MODIFICA / CANCELLA --------------------
     def handle_edit(self):
         print(f"Apertura modifica per prenotazione: {self.prenotazione.id}")
         self.modifica_prenotazione()

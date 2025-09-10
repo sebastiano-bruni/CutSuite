@@ -36,3 +36,18 @@ class PromozioneController:
     def reload(self):
         """Ricarica la lista delle promozioni dallo storage."""
         self.promozioni = self.storage.carica()
+
+    def calcola_sconto_cliente(self, cliente_id: str) -> float:
+
+        from controller.PrenotazioneController import PrenotazioneController
+        prenotazione_controller = PrenotazioneController()
+        numero = prenotazione_controller.get_numero_prenotazioni_pagate(cliente_id)
+
+        if numero >= 5:
+            return 0.05  # 5%
+        elif numero >= 10:
+            return 0.10  # 10%
+        elif numero >= 20:
+            return 0.20  #20%
+        else:
+            return 0.0

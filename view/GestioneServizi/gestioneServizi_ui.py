@@ -11,6 +11,7 @@ from PyQt6.QtGui import QFont
 from controller.ServizioController import ServizioController
 from view.GestioneServizi.dettagliServizio_ui import DettagliServizio
 from view.GestioneServizi.inserisciServizio_ui import InserisciServizio
+from controller.PrenotazioneController import PrenotazioneController
 
 
 class GestioneServizi(QMainWindow):
@@ -21,6 +22,7 @@ class GestioneServizi(QMainWindow):
         self.inserisci_window = None
         self.dettagli_window = None
         self.controller = ServizioController()
+        self.prenotazione_controller = PrenotazioneController()
         self.init_ui()
 
     def init_ui(self):
@@ -318,7 +320,8 @@ class GestioneServizi(QMainWindow):
 
     def open_statistiche_servizi(self):
         from view.GestioneServizi.statisticheServizi_ui import StatisticheServiziDialog
-        dialog = StatisticheServiziDialog(self.controller)
+        dialog = StatisticheServiziDialog(servizio_controller=self.controller,
+                                          prenotazione_controller=self.prenotazione_controller)
         dialog.exec()
 
 

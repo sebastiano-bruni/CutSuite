@@ -97,3 +97,7 @@ class PrenotazioneController:
 
         if modificato:
             self.storage.salva(self.prenotazioni)
+
+    def get_numero_prenotazioni_pagate(self, cliente_id: str) -> int:
+
+        return sum(1 for p in self.prenotazioni if p.cliente.id == cliente_id and p.stato == "pagata")

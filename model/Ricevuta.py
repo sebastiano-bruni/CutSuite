@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import ClassVar, Optional
+from typing import ClassVar
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -14,6 +14,8 @@ class Ricevuta:
     prenotazione: Prenotazione
     importo_totale: float
     dettagli: str
+    sconto_applicato: float = 0.0
+    importo_finale: float = field(init=False)
     data_emissione: datetime = field(default_factory=datetime.now)
 
     _next_id: ClassVar[int] = 1
@@ -22,6 +24,8 @@ class Ricevuta:
         if not hasattr(self, 'id'):
             self.id = Ricevuta._next_id
             Ricevuta._next_id += 1
+        # Calcola l'importo finale
+        self.importo_finale = self.importo_totale * (1 - self.sconto_applicato)
 
     def genera_testo(self):
         """Genera una rappresentazione testuale della ricevuta."""
@@ -38,7 +42,9 @@ class Ricevuta:
         Descrizione:
         {self.dettagli}
 
-        Importo totale: {self.importo_totale:.2f} €
+        Importo originale: {self.importo_totale:.2f} €
+        Sconto applicato: {self.sconto_applicato * 100:.0f} %
+        Importo finale: {self.importo_finale:.2f} €
         """
         return testo
 
@@ -48,19 +54,13 @@ class Ricevuta:
         styles = getSampleStyleSheet()
         story = []
 
-        # Stile per il titolo
+        # Titolo
         title_style = ParagraphStyle('Title', parent=styles['Normal'], fontSize=20, spaceAfter=20, alignment=1)
         story.append(Paragraph(f"Ricevuta #{self.id}", title_style))
 
-        # Gestione sicura del nome del cliente
-        cliente_full_name = "N/A"
-        if self.prenotazione.cliente:
-            if hasattr(self.prenotazione.cliente, 'nome') and hasattr(self.prenotazione.cliente, 'cognome'):
-                cliente_full_name = f"{self.prenotazione.cliente.nome} {self.prenotazione.cliente.cognome}"
-            elif hasattr(self.prenotazione.cliente, 'username'):
-                cliente_full_name = self.prenotazione.cliente.username
+        # Cliente
+        cliente_full_name = getattr(self.prenotazione.cliente, "nome_completo", "N/A")
 
-        # Gestione sicura del nome del dipendente
         dipendente_full_name = "N/A"
         if self.prenotazione.dipendente:
             if hasattr(self.prenotazione.dipendente, 'nome') and hasattr(self.prenotazione.dipendente, 'cognome'):
@@ -68,11 +68,9 @@ class Ricevuta:
             elif hasattr(self.prenotazione.dipendente, 'username'):
                 dipendente_full_name = self.prenotazione.dipendente.username
 
-        # Dettagli della ricevuta
-        story.append(
-            Paragraph(f"<b>Data di emissione:</b> {self.data_emissione.strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
+        # Info generali
+        story.append(Paragraph(f"<b>Data di emissione:</b> {self.data_emissione.strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
         story.append(Spacer(1, 0.5 * cm))
-        story.append(Paragraph("<b>Dettagli prenotazione:</b>", styles['Normal']))
         story.append(Paragraph(f"<b>Cliente:</b> {cliente_full_name}", styles['Normal']))
         story.append(Paragraph(f"<b>Servizio:</b> {self.prenotazione.servizio.nome}", styles['Normal']))
         story.append(Paragraph(f"<b>Dipendente:</b> {dipendente_full_name}", styles['Normal']))
@@ -81,11 +79,14 @@ class Ricevuta:
             styles['Normal']))
         story.append(Spacer(1, 0.5 * cm))
 
-        # Dettagli del servizio e importo
+        # Dettagli servizio
         story.append(Paragraph("<b>Descrizione servizio:</b>", styles['Normal']))
         story.append(Paragraph(f"{self.dettagli}", styles['Normal']))
         story.append(Spacer(1, 0.5 * cm))
 
-        story.append(Paragraph(f"<b>Importo totale:</b> {self.importo_totale:.2f} €", styles['Normal']))
+        # Importi
+        story.append(Paragraph(f"<b>Importo originale:</b> {self.importo_totale:.2f} €", styles['Normal']))
+        story.append(Paragraph(f"<b>Sconto applicato:</b> {self.sconto_applicato * 100:.0f} %", styles['Normal']))
+        story.append(Paragraph(f"<b>Importo finale:</b> {self.importo_finale:.2f} €", styles['Normal']))
 
         doc.build(story)

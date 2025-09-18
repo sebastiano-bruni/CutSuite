@@ -180,5 +180,18 @@
         "cliente_id": 1,
         "servizio_id": 1,
         "dipendente_id": 2
+    },
+    {
+        "data": "2025-09-18T00:00:00",
+        "ora": "2025-09-18T09:00:00",
+        "durata_minuti": 30,
+        "prezzo": 16.0,
+        "email_cliente": "noemi.bruni.04@gmail.com",
+        "note": "",
+        "stato": "effettuata",
+        "id": 18,
+        "cliente_id": 2,
+        "servizio_id": 1,
+        "dipendente_id": 2
     }
 ]

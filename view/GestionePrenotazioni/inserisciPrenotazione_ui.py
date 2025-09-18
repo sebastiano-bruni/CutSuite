@@ -28,6 +28,7 @@ class InserisciPrenotazione(QMainWindow):
         self.servizio_controller = ServizioController()
         self.dipendente_controller = DipendenteController()
 
+        self.input_fields = {}
         self.init_ui()
 
     def init_ui(self):
@@ -63,8 +64,6 @@ class InserisciPrenotazione(QMainWindow):
         form_layout.setSpacing(15)
         form_layout.setContentsMargins(25, 25, 25, 25)
 
-        self.input_fields = {}
-
         # Campi di input
         self.cliente_combo = self.create_cliente_combo("Cliente:")
         self.servizio_combo = self.create_servizio_combo("Servizio:")
@@ -81,6 +80,14 @@ class InserisciPrenotazione(QMainWindow):
         form_layout.addLayout(self.note_input)
 
         main_layout.addWidget(form_frame)
+
+        # 🔹 Collega segnali dopo creazione widget
+        self.input_fields['data'].dateChanged.connect(self.aggiorna_dipendenti_disponibili)
+        self.input_fields['ora'].timeChanged.connect(self.aggiorna_dipendenti_disponibili)
+        self.input_fields['servizio'].currentIndexChanged.connect(self.aggiorna_dipendenti_disponibili)
+
+        # Prima popolazione combo
+        self.aggiorna_dipendenti_disponibili()
 
         confirm_button = QPushButton("Conferma")
         confirm_button.setStyleSheet("""
@@ -111,17 +118,10 @@ class InserisciPrenotazione(QMainWindow):
 
         combo_box = QComboBox()
         combo_box.addItem("Seleziona cliente", None)
-        clienti = self.cliente_controller.get_tutti_clienti()
-        for c in clienti:
+        for c in self.cliente_controller.get_tutti_clienti():
             combo_box.addItem(f"{c.nome} {c.cognome}", c)
 
-        combo_box.setStyleSheet("""
-            QComboBox {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        combo_box.setStyleSheet("QComboBox { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         combo_box.setMinimumHeight(35)
         v_layout.addWidget(label)
         v_layout.addWidget(combo_box)
@@ -135,17 +135,10 @@ class InserisciPrenotazione(QMainWindow):
 
         combo_box = QComboBox()
         combo_box.addItem("Seleziona servizio", None)
-        servizi = self.servizio_controller.get_tutti_servizi()
-        for s in servizi:
+        for s in self.servizio_controller.get_tutti_servizi():
             combo_box.addItem(f"{s.nome} ({s.prezzo} €)", s)
 
-        combo_box.setStyleSheet("""
-            QComboBox {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        combo_box.setStyleSheet("QComboBox { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         combo_box.setMinimumHeight(35)
         v_layout.addWidget(label)
         v_layout.addWidget(combo_box)
@@ -158,18 +151,8 @@ class InserisciPrenotazione(QMainWindow):
         label.setStyleSheet("font-weight: bold; font-size: 14px;")
 
         combo_box = QComboBox()
-        combo_box.addItem("Seleziona dipendente", None)
-        dipendenti = self.dipendente_controller.get_tutti_dipendenti()
-        for d in dipendenti:
-            combo_box.addItem(f"{d.nome} {d.cognome} ({d.ruolo})", d)
-
-        combo_box.setStyleSheet("""
-            QComboBox {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        combo_box.addItem("Seleziona dipendente", None)  # verrà popolata dinamicamente
+        combo_box.setStyleSheet("QComboBox { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         combo_box.setMinimumHeight(35)
         v_layout.addWidget(label)
         v_layout.addWidget(combo_box)
@@ -183,13 +166,7 @@ class InserisciPrenotazione(QMainWindow):
         date_edit = QDateEdit()
         date_edit.setCalendarPopup(True)
         date_edit.setDate(QDate.currentDate())
-        date_edit.setStyleSheet("""
-            QDateEdit {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        date_edit.setStyleSheet("QDateEdit { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         date_edit.setMinimumHeight(35)
         v_layout.addWidget(label)
         v_layout.addWidget(date_edit)
@@ -204,13 +181,7 @@ class InserisciPrenotazione(QMainWindow):
         time_edit.setMinimumTime(QTime(9, 0))
         time_edit.setMaximumTime(QTime(19, 0))
         time_edit.setTime(QTime(9, 0))
-        time_edit.setStyleSheet("""
-            QTimeEdit {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        time_edit.setStyleSheet("QTimeEdit { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         time_edit.setMinimumHeight(35)
         v_layout.addWidget(label)
         v_layout.addWidget(time_edit)
@@ -223,18 +194,44 @@ class InserisciPrenotazione(QMainWindow):
         label.setStyleSheet("font-weight: bold; font-size: 14px;")
         text_edit = QTextEdit()
         text_edit.setPlaceholderText(placeholder)
-        text_edit.setStyleSheet("""
-            QTextEdit {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-        """)
+        text_edit.setStyleSheet("QTextEdit { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }")
         text_edit.setMinimumHeight(80)
         v_layout.addWidget(label)
         v_layout.addWidget(text_edit)
         self.input_fields['note'] = text_edit
         return v_layout
+
+    def aggiorna_dipendenti_disponibili(self):
+        data_qdate = self.input_fields['data'].date()
+        ora_qtime = self.input_fields['ora'].time()
+
+        if not data_qdate.isValid() or not ora_qtime.isValid():
+            return
+
+        data_inizio = datetime(
+            data_qdate.year(), data_qdate.month(), data_qdate.day(),
+            ora_qtime.hour(), ora_qtime.minute()
+        )
+
+        servizio = self.input_fields['servizio'].currentData()
+        durata = servizio.durata_minuti if servizio else 30
+
+        tutti_dipendenti = self.dipendente_controller.get_tutti_dipendenti()
+
+        # 🔹 Filtra solo i parrucchieri
+        solo_parrucchieri = [d for d in tutti_dipendenti if getattr(d, "ruolo", "").lower() == "parrucchiere"]
+
+        disponibili = self.prenotazione_controller.dipendenti_disponibili(
+            solo_parrucchieri, data_inizio, durata
+        )
+
+        combo = self.input_fields['dipendente']
+        combo.blockSignals(True)
+        combo.clear()
+        combo.addItem("Seleziona dipendente", None)
+        for d in disponibili:
+            combo.addItem(f"{d.nome} {d.cognome} ({getattr(d, 'ruolo', '')})", d)
+        combo.blockSignals(False)
 
     def validate_data(self, cliente, servizio, dipendente, data_qdate):
         errors = []
@@ -266,7 +263,6 @@ class InserisciPrenotazione(QMainWindow):
             QMessageBox.critical(self, "Errori di validazione", error_message)
             return
 
-        # Converti QDate e QTime in oggetti datetime
         data = datetime(data_qdate.year(), data_qdate.month(), data_qdate.day())
         ora = datetime(data_qdate.year(), data_qdate.month(), data_qdate.day(),
                        ora_qtime.hour(), ora_qtime.minute())

@@ -56,7 +56,7 @@ class DettagliCliente(QMainWindow):
         details_layout.setContentsMargins(0, 0, 0, 0)
 
         headers = ["ID", "Nome", "Cognome", "Email", "Telefono",
-                   "Codice Fiscale", "Numero Appuntamenti"]
+                   "Codice Fiscale", "Numero Appuntamenti", "Stato Fedeltà"]
 
         values = [
             str(self.cliente.id),
@@ -66,6 +66,7 @@ class DettagliCliente(QMainWindow):
             self.cliente.telefono,
             self.cliente.cf,
             str(self.cliente.numVisite),
+            str(self.cliente.statoFedelta)
         ]
 
         for i, (header, value) in enumerate(zip(headers, values)):

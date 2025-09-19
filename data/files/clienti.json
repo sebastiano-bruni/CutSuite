@@ -1,32 +1,52 @@
 [
     {
-        "nome": "seba",
-        "cognome": "bruni",
-        "cf": "BRNSST03P14E783J",
-        "email": "sebastiano.bruni.03@gmail.com",
-        "telefono": "1234312839",
-        "numVisite": 0,
-        "statoFedelta": "Non attivo",
+        "nome": "Valentina",
+        "cognome": "Galli",
+        "cf": "GLLVNT85M41L219K",
+        "email": "valentina.galli@example.com",
+        "telefono": "3381234567",
+        "numVisite": 27,
+        "statoFedelta": "Attivo",
         "id": 1
     },
     {
-        "nome": "noemi",
-        "cognome": "bruni",
-        "cf": "BSDNFNRIEOSF12Q4",
-        "email": "noemi.bruni.04@gmail.com",
-        "telefono": "2342143128",
-        "numVisite": 0,
+        "nome": "Federico",
+        "cognome": "Moretti",
+        "cf": "MRTFDR80A01H501U",
+        "email": "federico.moretti@example.com",
+        "telefono": "3488901234",
+        "numVisite": 5,
         "statoFedelta": "Non attivo",
         "id": 2
     },
     {
-        "nome": "Marco",
-        "cognome": "Verdi",
-        "cf": "qwertyuiopas3456",
-        "email": "marco.rossi@gmail.com",
-        "telefono": "2344429384",
-        "numVisite": 0,
+        "nome": "Eleonora",
+        "cognome": "Lombardi",
+        "cf": "LMBENR90C41A662O",
+        "email": "eleonora.lombardi@example.com",
+        "telefono": "3295678901",
+        "numVisite": 55,
         "statoFedelta": "Attivo",
         "id": 3
+    },
+    {
+        "nome": "Riccardo",
+        "cognome": "Barbieri",
+        "cf": "BRBRCR88P12H501W",
+        "email": "riccardo.barbieri@example.com",
+        "telefono": "3351122334",
+        "numVisite": 12,
+        "statoFedelta": "Attivo",
+        "id": 4
+    },
+    {
+        "nome": "Chiara",
+        "cognome": "Marino",
+        "cf": "MRNCRA95A41F839Z",
+        "email": "chiara.marino@example.com",
+        "telefono": "3497788990",
+        "numVisite": 1,
+        "statoFedelta": "Non attivo",
+        "id": 5
     }
 ]

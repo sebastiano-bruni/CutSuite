@@ -2,190 +2,19 @@
     {
         "id": 1,
         "prenotazione_id": 1,
-        "importo_totale": 16.0,
+        "importo_totale": 18.0,
         "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-08-30T23:59:14.223251"
+        "importo_finale": 18.0,
+        "dettagli": "Taglio classico e styling per uomo.",
+        "data_emissione": "2025-09-19T10:46:51.534564"
     },
     {
         "id": 2,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
+        "prenotazione_id": 3,
+        "importo_totale": 35.0,
         "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-08-31T00:00:43.547906"
-    },
-    {
-        "id": 3,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-08-31T00:01:06.115743"
-    },
-    {
-        "id": 4,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-08-31T00:05:09.026479"
-    },
-    {
-        "id": 5,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-08-31T00:06:55.132929"
-    },
-    {
-        "id": 6,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T12:47:54.237231"
-    },
-    {
-        "id": 7,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T12:48:06.191220"
-    },
-    {
-        "id": 8,
-        "prenotazione_id": 2,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T12:48:43.949712"
-    },
-    {
-        "id": 9,
-        "prenotazione_id": 2,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T12:51:05.858344"
-    },
-    {
-        "id": 10,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T13:02:32.923515"
-    },
-    {
-        "id": 11,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-08T13:17:31.352932"
-    },
-    {
-        "id": 12,
-        "prenotazione_id": 1,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:57:41.142665"
-    },
-    {
-        "id": 13,
-        "prenotazione_id": 9,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:58:14.757577"
-    },
-    {
-        "id": 14,
-        "prenotazione_id": 10,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:58:34.151637"
-    },
-    {
-        "id": 15,
-        "prenotazione_id": 11,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:58:53.728223"
-    },
-    {
-        "id": 16,
-        "prenotazione_id": 11,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.05,
-        "importo_finale": 15.2,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:59:02.803491"
-    },
-    {
-        "id": 17,
-        "prenotazione_id": 11,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.05,
-        "importo_finale": 15.2,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T13:59:05.683278"
-    },
-    {
-        "id": 18,
-        "prenotazione_id": 12,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T14:06:49.058714"
-    },
-    {
-        "id": 19,
-        "prenotazione_id": 15,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.0,
-        "importo_finale": 16.0,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T17:23:16.570685"
-    },
-    {
-        "id": 20,
-        "prenotazione_id": 16,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.3,
-        "importo_finale": 11.2,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T17:23:47.355108"
-    },
-    {
-        "id": 21,
-        "prenotazione_id": 17,
-        "importo_totale": 16.0,
-        "sconto_applicato": 0.3,
-        "importo_finale": 11.2,
-        "dettagli": "Taglio per uomini",
-        "data_emissione": "2025-09-10T17:23:51.567654"
+        "importo_finale": 35.0,
+        "dettagli": "Taglio personalizzato, shampoo e consulenza.",
+        "data_emissione": "2025-09-19T10:49:06.918491"
     }
 ]

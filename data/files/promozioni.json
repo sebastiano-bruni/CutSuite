@@ -1,11 +1,30 @@
 [
     {
-        "nome": "Promo30",
-        "descrizione": "sconto del 30%",
-        "sconto_percentuale": 30,
-        "data_inizio": "2025-08-30T00:00:00",
-        "data_fine": "2025-10-07T00:00:00",
-        "soglia_promozione": 5,
+        "nome": "Sconto Fedeltà Argento",
+        "descrizione": "10% di sconto per i clienti che hanno raggiunto 10 appuntamenti.",
+        "sconto_percentuale": 10,
+        "data_inizio": "2025-07-01T00:00:00",
+        "data_fine": "2025-08-31T23:59:59",
+        "soglia_promozione": 10,
+        "id": 1
+    },
+    {
+        "nome": "Sconto Fedeltà Oro",
+        "descrizione": "15% di sconto per i clienti che hanno raggiunto 25 appuntamenti.",
+        "sconto_percentuale": 15,
+        "data_inizio": "2025-09-01T00:00:00",
+        "data_fine": "2025-09-30T23:59:59",
+        "soglia_promozione": 25,
         "id": 2
+    },
+    {
+        "nome": "Sconto Fedeltà Platino",
+        "descrizione": "20% di sconto per i clienti con più di 50 appuntamenti.",
+        "sconto_percentuale": 20,
+        "data_inizio": "2025-10-01T00:00:00",
+        "data_fine": "2025-10-31T23:59:59",
+        "soglia_promozione": 50,
+        "id": 3
     }
 ]
+

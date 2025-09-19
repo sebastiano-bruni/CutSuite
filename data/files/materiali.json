@@ -1,10 +1,50 @@
 [
     {
-        "nome": "asasasa",
-        "categoria": "shampoo",
-        "prezzo": 1.5,
-        "quantita": 1,
-        "soglia_scorte": 3,
+        "nome": "Shampoo Ristrutturante Keratina",
+        "categoria": "Shampoo",
+        "prezzo": 12.5,
+        "quantita": 35,
+        "soglia_scorte": 10,
         "id": 1
+    },
+    {
+        "nome": "Tinta Castano Chiaro 5.0",
+        "categoria": "Tinta",
+        "prezzo": 8.0,
+        "quantita": 50,
+        "soglia_scorte": 20,
+        "id": 2
+    },
+    {
+        "nome": "Balsamo Nutriente Argan",
+        "categoria": "Balsamo",
+        "prezzo": 15.0,
+        "quantita": 25,
+        "soglia_scorte": 10,
+        "id": 3
+    },
+    {
+        "nome": "Lacca Fissaggio Forte",
+        "categoria": "Styling",
+        "prezzo": 7.5,
+        "quantita": 59,
+        "soglia_scorte": 30,
+        "id": 4
+    },
+    {
+        "nome": "Olio Protettivo Punte",
+        "categoria": "Trattamento",
+        "prezzo": 22.0,
+        "quantita": 15,
+        "soglia_scorte": 6,
+        "id": 6
+    },
+    {
+        "nome": "Tinta Biondo Platino 10.1",
+        "categoria": "Tinta",
+        "prezzo": 9.5,
+        "quantita": 18,
+        "soglia_scorte": 20,
+        "id": 5
     }
 ]

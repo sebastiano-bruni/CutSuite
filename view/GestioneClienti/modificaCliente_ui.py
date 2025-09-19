@@ -100,50 +100,6 @@ class ModificaCliente(QMainWindow):
             form_layout.addLayout(field_layout)
             self.input_fields[field_name] = input_field
 
-        separator = QFrame()
-        separator.setFrameShape(QFrame.Shape.HLine)
-        separator.setFrameShadow(QFrame.Shadow.Sunken)
-        separator.setStyleSheet("color: #cccccc; margin: 10px 0;")
-        form_layout.addWidget(separator)
-
-        stato_fedelta_layout = QVBoxLayout()
-        stato_fedelta_layout.setSpacing(5)
-
-        stato_label = QLabel("Stato Fedeltà:")
-        stato_label.setStyleSheet("font-weight: bold; color: #333333; font-size: 14px;")
-        stato_fedelta_layout.addWidget(stato_label)
-
-        self.stato_fedelta_combo = QComboBox()
-        self.stato_fedelta_combo.addItems(["Attivo", "Inattivo", "Premium", "VIP", "Standard"])
-
-        current_text = self.cliente.statoFedelta
-        if current_text:
-            for i in range(self.stato_fedelta_combo.count()):
-                if self.stato_fedelta_combo.itemText(i).lower() == current_text.lower():
-                    self.stato_fedelta_combo.setCurrentIndex(i)
-                    break
-            else:
-                self.stato_fedelta_combo.addItem(current_text)
-                self.stato_fedelta_combo.setCurrentText(current_text)
-
-        self.stato_fedelta_combo.setStyleSheet("""
-            QComboBox {
-                padding: 12px;
-                border: 2px solid #dddddd;
-                border-radius: 6px;
-                font-size: 14px;
-                background-color: #fafafa;
-            }
-            QComboBox:focus {
-                border-color: #4a90e2;
-            }
-            QComboBox::drop-down {
-                border: none;
-            }
-        """)
-        self.stato_fedelta_combo.setMinimumHeight(40)
-        stato_fedelta_layout.addWidget(self.stato_fedelta_combo)
-        form_layout.addLayout(stato_fedelta_layout)
         main_layout.addWidget(form_frame)
 
         confirm_button = QPushButton("Conferma")
@@ -173,8 +129,6 @@ class ModificaCliente(QMainWindow):
         for field_name, input_field in self.input_fields.items():
             modified_data[field_name] = input_field.text().strip()
 
-        modified_data["statoFedelta"] = self.stato_fedelta_combo.currentText()
-
         errors = self.validate_data(modified_data)
         if errors:
             error_message = "Si sono verificati i seguenti errori:\n\n" + "\n".join(errors)
@@ -183,6 +137,7 @@ class ModificaCliente(QMainWindow):
 
         controller = ClienteController()
         try:
+            # Rimosso statoFedelta dalla chiamata
             success = controller.aggiorna_cliente(
                 id=self.cliente.id,
                 nome=modified_data['nome'],
@@ -190,8 +145,7 @@ class ModificaCliente(QMainWindow):
                 email=modified_data['email'],
                 telefono=modified_data['telefono'],
                 cf=modified_data['codice_fiscale'],
-                numVisite=int(modified_data['numero_appuntamenti']),
-                statoFedelta=modified_data['statoFedelta']
+                numVisite=int(modified_data['numero_appuntamenti'])
             )
 
             if success:
@@ -239,7 +193,5 @@ class ModificaCliente(QMainWindow):
         if not data['numero_appuntamenti'].isdigit():
             errors.append("• Il numero di appuntamenti deve essere un numero.")
 
-        if not data.get('statoFedelta'):
-            errors.append("• Il campo Stato Fedeltà è obbligatorio.")
-
         return errors
+

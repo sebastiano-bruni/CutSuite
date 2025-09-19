@@ -5,7 +5,7 @@
         "cf": "GLLVNT85M41L219K",
         "email": "valentina.galli@example.com",
         "telefono": "3381234567",
-        "numVisite": 27,
+        "numVisite": 0,
         "statoFedelta": "Attivo",
         "id": 1
     },
@@ -15,7 +15,7 @@
         "cf": "MRTFDR80A01H501U",
         "email": "federico.moretti@example.com",
         "telefono": "3488901234",
-        "numVisite": 5,
+        "numVisite": 0,
         "statoFedelta": "Non attivo",
         "id": 2
     },
@@ -25,7 +25,7 @@
         "cf": "LMBENR90C41A662O",
         "email": "eleonora.lombardi@example.com",
         "telefono": "3295678901",
-        "numVisite": 55,
+        "numVisite": 0,
         "statoFedelta": "Attivo",
         "id": 3
     },
@@ -35,7 +35,7 @@
         "cf": "BRBRCR88P12H501W",
         "email": "riccardo.barbieri@example.com",
         "telefono": "3351122334",
-        "numVisite": 12,
+        "numVisite": 0,
         "statoFedelta": "Attivo",
         "id": 4
     },
@@ -45,7 +45,7 @@
         "cf": "MRNCRA95A41F839Z",
         "email": "chiara.marino@example.com",
         "telefono": "3497788990",
-        "numVisite": 1,
+        "numVisite": 0,
         "statoFedelta": "Non attivo",
         "id": 5
     }

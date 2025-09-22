@@ -1,3 +1,4 @@
+from controller.ClienteController import ClienteController
 from model.Promozione import Promozione
 from data.storage.storage_promozione import StoragePromozione
 from controller.PrenotazioneController import PrenotazioneController
@@ -40,8 +41,10 @@ class PromozioneController:
 
     def calcola_sconto_cliente(self, promozioni: list, cliente_id: str) -> float:
 
-        prenotazione_controller = PrenotazioneController()
-        numero_prenotazioni = prenotazione_controller.get_numero_prenotazioni_pagate(cliente_id)
+        #prenotazione_controller = PrenotazioneController()
+        #numero_prenotazioni = prenotazione_controller.get_numero_prenotazioni_pagate(cliente_id)
+        cliente_controller = ClienteController()
+        numero_prenotazioni = cliente_controller.get_cliente_by_id(cliente_id).numVisite
 
         sconto_massimo = 0.0
 

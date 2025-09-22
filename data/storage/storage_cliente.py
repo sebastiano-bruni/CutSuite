@@ -28,7 +28,7 @@ class StorageCliente:
                 email=c["email"],
                 telefono=c["telefono"],
                 numVisite=c.get("numVisite", 0),
-                statoFedelta = c.get("statoFedelta", "inattivo")
+                statoFedelta = c.get("statoFedelta", "Non Attivo")
             )
             cliente.id = c["id"]  # assegna manualmente l'id salvato
             clienti.append(cliente)
@@ -55,4 +55,12 @@ class StorageCliente:
         """Rimuove un cliente per ID"""
         clienti = self.carica()
         clienti = [c for c in clienti if c.id != id_cliente]
+        self.salva(clienti)
+
+    def aggiorna_singolo(self, cliente_modificato: Cliente):
+        clienti = self.carica()
+        for i, cliente in enumerate(clienti):
+            if cliente.id == cliente_modificato.id:
+                clienti[i] = cliente_modificato
+                break
         self.salva(clienti)

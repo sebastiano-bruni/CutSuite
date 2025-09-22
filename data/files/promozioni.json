@@ -1,33 +1,33 @@
 [
     {
-        "nome": "Sconto Fedeltà Argento",
+        "nome": "Sconto Fedelt\u00e0 Argento",
         "descrizione": "10% di sconto per i clienti che hanno raggiunto 10 appuntamenti.",
         "sconto_percentuale": 10,
         "data_inizio": "2025-07-01T00:00:00",
-        "data_fine": "2025-10-31T23:59:59",
+        "data_fine": "2025-10-31T00:00:00",
         "soglia_promozione": 10,
         "id": 1
     },
     {
-        "nome": "Sconto Fedeltà Oro",
+        "nome": "Sconto Fedelt\u00e0 Oro",
         "descrizione": "15% di sconto per i clienti che hanno raggiunto 25 appuntamenti.",
         "sconto_percentuale": 15,
         "data_inizio": "2025-09-01T00:00:00",
-        "data_fine": "2025-09-30T23:59:59",
+        "data_fine": "2025-09-30T00:00:00",
         "soglia_promozione": 25,
         "id": 2
     },
     {
-        "nome": "Sconto Fedeltà Platino",
+        "nome": "Sconto Fedelt\u00e0 Platino",
         "descrizione": "20% di sconto per i clienti che hanno raggiunto 10 appuntamenti.",
         "sconto_percentuale": 20,
         "data_inizio": "2025-10-01T00:00:00",
-        "data_fine": "2025-10-31T23:59:59",
+        "data_fine": "2025-10-31T00:00:00",
         "soglia_promozione": 50,
         "id": 3
     },
     {
-        "nome": "Sconto Fedeltà Bronzo",
+        "nome": "Sconto Fedelt\u00e0 Bronzo",
         "descrizione": "5% di sconto per i clienti che hanno raggiunto 10 appuntamenti.",
         "sconto_percentuale": 5,
         "data_inizio": "2025-09-18T00:00:00",

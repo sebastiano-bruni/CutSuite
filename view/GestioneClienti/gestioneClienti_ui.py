@@ -11,6 +11,7 @@ from controller.ClienteController import ClienteController
 from view.GestioneClienti.dettagliCliente_ui import DettagliCliente
 from view.GestioneClienti.inserisciCliente_ui import InserisciCliente
 from view.GestioneClienti.modificaCliente_ui import ModificaCliente
+from signals import app_signals
 
 
 class GestioneClienti(QMainWindow):
@@ -21,6 +22,8 @@ class GestioneClienti(QMainWindow):
         self.inserisci_window = None
         self.dettagli_window = None
         self.controller = ClienteController()
+
+        app_signals.cliente_modificato.connect(self.aggiorna_lista_clienti)
 
         # Widget centrale
         central_widget = QWidget()
@@ -318,7 +321,8 @@ class GestioneClienti(QMainWindow):
         self.dettagli_window.raise_()
         self.dettagli_window.activateWindow()
 
-    def aggiorna_lista_clienti(self):
+
+    def aggiorna_lista_clienti(self, cliente_id=None):
         print("Aggiorno lista clienti...")
         self.controller.reload()
         self.display_clients(self.controller.get_tutti_clienti())

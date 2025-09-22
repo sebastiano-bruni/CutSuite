@@ -8,6 +8,7 @@ from PyQt6.QtGui import QFont
 
 from controller.ClienteController import ClienteController
 from view.GestioneClienti.modificaCliente_ui import ModificaCliente
+from signals import app_signals
 
 
 class DettagliCliente(QMainWindow):
@@ -16,10 +17,13 @@ class DettagliCliente(QMainWindow):
     def __init__(self, cliente, parent_window=None):
         super().__init__()
         self.cliente = cliente
-        self.parent_window = parent_window  # Salva il riferimento alla finestra principale
+        self.parent_window = parent_window
         self.setWindowTitle("CutSuite - Dettagli cliente")
         self.resize(600, 500)
+        self.value_labels = {}  # Dizionario per memorizzare le etichette
         self.init_ui()
+
+        app_signals.cliente_modificato.connect(self.handle_aggiornamento_esterno)
 
     def init_ui(self):
         central_widget = QWidget()
@@ -95,6 +99,9 @@ class DettagliCliente(QMainWindow):
             details_layout.addWidget(header_label, i, 0)
             details_layout.addWidget(value_label, i, 1)
 
+            # Aggiungi l'etichetta al dizionario per poterla aggiornare
+            self.value_labels[header] = value_label
+
         details_layout.setColumnStretch(0, 1)
         details_layout.setColumnStretch(1, 2)
         main_layout.addWidget(details_frame)
@@ -152,6 +159,28 @@ class DettagliCliente(QMainWindow):
         main_layout.addWidget(buttons_container)
         main_layout.addStretch()
 
+    def handle_aggiornamento_esterno(self, cliente_id):
+        """ Questo metodo viene chiamato quando il segnale globale viene emesso. """
+        # Controlla se l'aggiornamento riguarda proprio il cliente visualizzato
+        if self.cliente and self.cliente.id == cliente_id:
+            print(f"La finestra dettagli del cliente {self.cliente.id} ha ricevuto un aggiornamento!")
+            self.aggiorna_dettagli_cliente()
+
+    def aggiorna_dettagli_cliente(self):
+        """Ricarica i dati del cliente e aggiorna la UI."""
+        print("Aggiornamento dettagli cliente...")
+        self.controller.reload()
+        self.cliente = self.controller.get_cliente_by_id(self.cliente.id)
+
+        # Aggiorna il testo delle etichette con i nuovi dati
+        self.value_labels["ID"].setText(str(self.cliente.id))
+        self.value_labels["Nome"].setText(self.cliente.nome)
+        self.value_labels["Cognome"].setText(self.cliente.cognome)
+        self.value_labels["Email"].setText(self.cliente.email)
+        self.value_labels["Telefono"].setText(self.cliente.telefono)
+        self.value_labels["Codice Fiscale"].setText(self.cliente.cf)
+        self.value_labels["Numero Appuntamenti"].setText(str(self.cliente.numVisite))
+
     def handle_edit(self):
         print(f"Apertura modifica per cliente: {self.cliente.nome} {self.cliente.cognome}")
         self.modifica_cliente()
@@ -174,7 +203,6 @@ class DettagliCliente(QMainWindow):
                     f"Cliente {self.cliente.nome} {self.cliente.cognome} eliminato con successo!"
                 )
 
-                # Chiama direttamente il metodo di aggiornamento della finestra principale
                 if self.parent_window and hasattr(self.parent_window, 'aggiorna_lista_clienti'):
                     self.parent_window.aggiorna_lista_clienti()
 

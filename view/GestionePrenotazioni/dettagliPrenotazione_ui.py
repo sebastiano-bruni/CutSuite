@@ -7,13 +7,16 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 
+from controller.ClienteController import ClienteController
 from controller.PrenotazioneController import PrenotazioneController
 from controller.RicevutaController import RicevutaController
 from model.Ricevuta import Ricevuta
+from signals import app_signals
 
 
 class DettagliPrenotazione(QMainWindow):
     prenotazione_modificata = pyqtSignal()
+    cliente_modificato = pyqtSignal()
 
     def __init__(self, prenotazione, parent_window=None):
         super().__init__()
@@ -28,6 +31,7 @@ class DettagliPrenotazione(QMainWindow):
         self.setCentralWidget(central_widget)
         self.prenotazione_controller = PrenotazioneController()
         self.ricevuta_controller = RicevutaController()
+        self.cliente_controller = ClienteController()
 
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(20)
@@ -177,7 +181,7 @@ class DettagliPrenotazione(QMainWindow):
 
     def controlla_ricevuta_esistente(self):
         ricevuta = next((r for r in self.ricevuta_controller.get_tutte_ricevute()
-                         if r.prenotazione.id == self.prenotazione.id), None)
+                         if r.prenotazione and r.prenotazione.id == self.prenotazione.id), None)
         if ricevuta:
             self.receipt_button.hide()
         else:
@@ -197,6 +201,19 @@ class DettagliPrenotazione(QMainWindow):
                 stato="pagata"
             )
             self.prenotazione.stato = "pagata"
+
+            cliente_da_aggiornare = self.prenotazione.cliente
+            cliente_da_aggiornare.numVisite += 1
+
+            self.cliente_controller.aggiorna_cliente(
+                id=cliente_da_aggiornare.id,
+                numVisite=cliente_da_aggiornare.numVisite
+            )
+
+            # Emetti il segnale GLOBALE con l'ID del cliente aggiornato
+            app_signals.cliente_modificato.emit(cliente_da_aggiornare.id)
+
+
             self.prenotazione_modificata.emit()
 
             # Nasconde il pulsante dopo emissione

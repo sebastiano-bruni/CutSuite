@@ -35,3 +35,5 @@ class ClienteController:
     def ricerca_cliente_per_nome(self, nome: str):
         nome = nome.lower()
         return [c for c in self.clienti if nome in c.nome.lower()]
+
+
